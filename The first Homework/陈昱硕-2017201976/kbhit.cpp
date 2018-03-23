@@ -3,7 +3,7 @@
 #include <ctime>
 
 void InitKeyboard(){
-    tcgetattr(0,&initial_settings);
+    tcgetattr(0, &initial_settings);
     new_settings = initial_settings;
     new_settings.c_lflag &= ~ICANON;
     new_settings.c_lflag &= ~ECHO;

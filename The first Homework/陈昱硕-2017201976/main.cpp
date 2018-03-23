@@ -1,8 +1,10 @@
 #include <cstdio>
 
+#include "global_settings.h"
 #include "crawl.h"
 
-int main(){
-	crawl();
+int main(int argc, char *argv[]){
+	InitGlobalSettings(argc, argv);
+	Crawl();
 	return 0;
 }

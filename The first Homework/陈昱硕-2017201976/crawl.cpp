@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <string>
+#include <vector>
 #include <queue>
 #include <set>
 
@@ -15,19 +16,30 @@
 
 using namespace std;
 
-queue<string> *queue_of_web_site;
-set<string> *set_of_web_site;
+extern vector<string> seed;
 
-void crawl(){
+extern int running_mode;
+extern string input_file;
+extern string output_file;
+
+static queue<string> *queue_of_web_site;
+static set<string> *set_of_web_site;
+
+static void InitQueue(){
 	queue_of_web_site = new queue<string>;
 	set_of_web_site = new set<string>;
 	while (!queue_of_web_site -> empty())
 		queue_of_web_site -> pop();
 	set_of_web_site -> clear();
-		
-	queue_of_web_site -> push(seed);
-	set_of_web_site -> insert(seed);
 	
+	for (auto iter : seed){
+		queue_of_web_site -> push(iter);
+		set_of_web_site -> insert(iter);
+	}
+}
+
+void Crawl(){
+	InitQueue();
 	InitViewer();
 	InitKeyboard();
 	
@@ -48,14 +60,13 @@ void crawl(){
 		SetPage(web_site, page_content);
 		
 		number_of_web_site ++;
-		cerr << *web_site << " catched!" << endl;
+		cerr << *web_site << endl;
 		cerr << "Catched = " << number_of_web_site << endl;
 		
 		string *next_url;
 		while ((next_url = GetNextUrl()) != NULL){
-			//cerr << "next_url = " << *next_url << endl;
 			if (set_of_web_site -> count(*next_url) == 0){
-				FILE *fp = fopen("origin.log", "a+");
+				FILE *fp = fopen(output_file . c_str(), "a+");
 				fprintf(fp, "%s -> %s\n", web_site -> c_str(), next_url -> c_str());
 				fclose(fp);
 				queue_of_web_site -> push(*next_url);
@@ -65,8 +76,9 @@ void crawl(){
 		}
 		
 		cerr << "end of this file" << endl;
-		/*for (int i = 1; i <= 2000000000; i ++)
-			;*/
+		FILE *fp = fopen(output_file . c_str(), "a+");
+		fprintf(fp, "pop: %s", web_site -> c_str());
+		fclose(fp);
 		
 		delete web_site;
 		delete page_content;
