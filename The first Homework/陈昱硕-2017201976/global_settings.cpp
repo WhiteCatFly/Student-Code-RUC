@@ -72,7 +72,7 @@ static void PrintSettings(){
 	cout << "save directory = " << save_directory << endl;
 	cout << "timeout time = " << timeout_time << endl;
 	cout << "time interval = " << time_interval << endl;
-	cout << endl;
+	cout << "---------------------------------" << endl;
 }
 
 void InitGlobalSettings(const int &argc, char *argv[]){

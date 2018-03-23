@@ -210,7 +210,7 @@ string *GetNextUrl(){
 		if (GetNextPosition(begin, end) == false){
 			delete result;
 			return NULL;
-		}		
+		}
 		//cerr << begin << " " << end << " " << cursor_position << " " << content . length() << endl;
 		*result = content . substr(begin, end - begin);		
 		NormalizeWebSite(result);

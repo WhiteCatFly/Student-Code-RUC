@@ -68,7 +68,6 @@ void Crawl(){
 	InitViewer();
 	InitKeyboard();
 	
-	
 	while (!queue_of_web_site -> empty()){
 		CheckKeyboard();
 		
