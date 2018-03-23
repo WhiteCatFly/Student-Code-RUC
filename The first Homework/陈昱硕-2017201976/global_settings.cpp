@@ -33,7 +33,7 @@ static void HelpMessage(){
 	free(message);
 }
 
-static void SetKeyWord(const string &keys){
+static void SetArray(const string &keys, vector<string> &array){
 	string :: size_type begin = 0;
 	string :: size_type end;
 	do{
@@ -41,7 +41,7 @@ static void SetKeyWord(const string &keys){
 		if (end == string :: npos)
 			end = keys . length();
 		
-		key_word . push_back(keys . substr(begin, end - begin));
+		array . push_back(keys . substr(begin, end - begin));
 		
 		begin = end + 1;
 	}while (end != keys . length());
@@ -61,10 +61,10 @@ static void SetValue(int &value, const string &key){
 static void PrintSettings(){
 	cout << "seed : " << endl;
 	for (auto it : seed)
-		cout << (it) << endl;
+		cout << '\t' << (it) << endl;
 	cout << "key word : " << endl;
 	for (auto it : key_word)
-		cout << (it) << endl;
+		cout << '\t' << (it) << endl;
 	cout << "running mode = " << running_mode << endl;
 	cout << "input file = " << input_file << endl;
 	cout << "output file = " << output_file << endl;
@@ -72,6 +72,7 @@ static void PrintSettings(){
 	cout << "save directory = " << save_directory << endl;
 	cout << "timeout time = " << timeout_time << endl;
 	cout << "time interval = " << time_interval << endl;
+	cout << endl;
 }
 
 void InitGlobalSettings(const int &argc, char *argv[]){
@@ -79,7 +80,17 @@ void InitGlobalSettings(const int &argc, char *argv[]){
 	for (char **ptr = argv + 1; *ptr != NULL; ptr ++){
 		if (*ptr[0] == '-'){
 			option = string(*ptr);
-			if (option == "-k" || option . find("--key-word=") == 0){
+			if (option == "-s" || option . find("--seed=") == 0){
+				if (option == "-s"){
+					ptr ++;
+					key = string(*ptr);
+				}
+				else{
+					key = option . substr(strlen("--seed="));
+				}
+				SetArray(key, seed);
+			}
+			else if (option == "-k" || option . find("--key-word=") == 0){
 				if (option == "-k"){
 					ptr ++;
 					key = string(*ptr);
@@ -87,7 +98,7 @@ void InitGlobalSettings(const int &argc, char *argv[]){
 				else{
 					key = option . substr(strlen("--key-word="));
 				}
-				SetKeyWord(key);
+				SetArray(key, key_word);
 			}
 			else if (option == "-l" || option . find("--load=") == 0){
 				running_mode = Load;
@@ -102,6 +113,7 @@ void InitGlobalSettings(const int &argc, char *argv[]){
 			}
 			else if (option == "-h" || option . find("--help") == 0){
 				HelpMessage();
+				exit(0);
 			}
 			else if (option . find("--break-point=") == 0){
 				output_file = option . substr(strlen("--break-point="));
@@ -134,15 +146,9 @@ void InitGlobalSettings(const int &argc, char *argv[]){
 			}
 		}
 		else{
-			seed . push_back(string(*ptr));
+			HelpMessage();
+			exit(1);
 		}
-	}
-	
-	if (key_word . size() == 0)
-		key_word . push_back(string("ruc"));
-	
-	if (seed . size() == 0)
-		seed . push_back(string("http://www.ruc.edu.cn"));
-	
+	}	
 	PrintSettings();
 }

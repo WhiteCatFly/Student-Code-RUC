@@ -1,6 +1,6 @@
 run : main
-	rm -rf error.log origin.log
-	reset && ./main http://www.ruc.edu.cn --key-word=ruc --timeout=100
+	#rm -rf error.log origin.log
+	reset && ./main -s http://www.ruc.edu.cn --key-word=ruc --timeout=100
 	
 objects = main.o crawl.o filter.o view_source.o convert.o kbhit.o global_settings.o
 

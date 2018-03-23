@@ -30,6 +30,9 @@ static CURL *curl_handle;
 static CURLcode return_code;
 
 void InitViewer(){
+	FILE *fp = fopen(error_file . c_str(), "w");
+	fclose(fp);	
+	
 	return_code = curl_global_init(CURL_GLOBAL_ALL);
 	if (return_code != CURLE_OK){
 		fprintf(stderr, "global_init failed!\n");

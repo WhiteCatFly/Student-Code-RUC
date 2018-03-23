@@ -1,12 +1,16 @@
 这是一个简单的网络爬虫。
 
 简介：
-	./main [OPTION].. [URL]...
+	./main [OPTION]..
 	
 描述：
+	-s URL
+	--seed=URL1,URL2,...,URLn
+		设置爬虫的种子，此选项在使用断点加载是无效
+	
 	-k KEY
 	--key-word=KEY1,KEY2,...,KEYn
-		设置抓取页面域名的关键字，默认是ruc
+		设置抓取页面域名的关键字
 	
 	-l file
 	--load=file
