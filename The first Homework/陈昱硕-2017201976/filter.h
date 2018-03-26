@@ -3,10 +3,9 @@
 
 #include <string>
 
-using namespace std;
+using std :: string;
 
 #ifdef FILTER_CPP
-const string key_word = string("ruc");
 const char *forbidden_string[] = {"@", "#", "(", ")", "[", "]", "{", "}",
 					".txt", ".doc", ".ppt", ".xls", ".XLS", ".pdf", ".PDF", "ftp://", "file://", "telnet://",
 					".jpg", ".JPG", ".jpeg", ".png", ".gif", ".bmp", ".rar", ".zip", ".7z", ".mp3", ".MP3", ".mp4", ".MP4",

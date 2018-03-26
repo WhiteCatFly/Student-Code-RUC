@@ -6,8 +6,13 @@
 #include <iostream>
 
 #include <string>
+#include <vector>
 
 using namespace std;
+
+extern vector<string> key_word;
+
+extern string error_file;
 
 static string content;
 static string site;
@@ -21,7 +26,7 @@ void SetPage(string *web_site, string *page_content){
 	string :: size_type begin = web_site -> find("://");
 	string :: size_type end = web_site -> find_last_of("/", web_site -> find("?"));
 	if (begin == string :: npos){
-		FILE *fp = fopen("error.log", "a+");
+		FILE *fp = fopen(error_file . c_str(), "a+");
 		fprintf(fp, "%s is illegal!\n", web_site -> c_str());
 		fclose(fp);
 		web_site_error = true;
@@ -54,9 +59,11 @@ static bool ValidUrl(string *result){
 		return false;
 	begin += strlen("://");
 	string :: size_type end = result -> find("/", begin);
-	string :: size_type position = result -> find(key_word);
-	if (!(begin <= position && position < end))
-		return false;
+	for (auto iter : key_word){
+		string :: size_type position = result -> find(iter);
+		if (!(begin <= position && position < end))
+			return false;
+	}
 	
 	for (const char **ptr = forbidden_string; strcmp(*ptr, "END"); ptr ++)
 		if (result -> find(*ptr) != string :: npos)
@@ -171,6 +178,28 @@ static void NormalizeWebSite(string *web_site){
 	DeleteArgv(web_site);
 }
 
+static bool GetNextPosition(string :: size_type &begin, string :: size_type &end){
+	if (cursor_position >= (int)content . length())
+		return false;
+			
+	begin = content . find("<a", cursor_position);
+	if (begin == string :: npos)
+		return false;
+	begin = content . find("href", begin);
+	if (begin == string :: npos)
+		return false;
+	begin = min(content . find("'", begin), content . find("\"", begin));
+	if (begin == string :: npos)
+		return false;
+	begin ++;
+	
+	end = min(content . find("'", begin), content . find("\"", begin));
+	if (end == string :: npos)
+		return false;
+	
+	return true;
+}
+
 string *GetNextUrl(){
 	if (web_site_error)
 		return NULL;
@@ -178,38 +207,14 @@ string *GetNextUrl(){
 	string *result = new string;
 	
 	do{
-		if (cursor_position >= (int)content . length()){
+		if (GetNextPosition(begin, end) == false){
 			delete result;
 			return NULL;
 		}
-				
-		begin = content . find("<a", cursor_position);
-		if (begin == string :: npos){
-			delete result;
-			return NULL;
-		}
-		begin = content . find("href", begin);
-		if (begin == string :: npos){
-			delete result;
-			return NULL;
-		}
-		begin = min(content . find("'", begin), content . find("\"", begin));
-		if (begin == string :: npos){
-			delete result;
-			return NULL;
-		}
-		begin ++;
-		
-		end = min(content . find("'", begin), content . find("\"", begin));
-		if (end == string :: npos){
-			delete result;
-			return NULL;
-		}
-		
 		//cerr << begin << " " << end << " " << cursor_position << " " << content . length() << endl;
 		*result = content . substr(begin, end - begin);		
 		NormalizeWebSite(result);
-			
+		
 		cursor_position = end + 1;
 	}while (ValidUrl(result) == false);
 	return result;
