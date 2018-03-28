@@ -12,11 +12,12 @@ void InitKeyboard(){
     new_settings.c_cc[VTIME] = 0;
     tcsetattr(0, TCSANOW, &new_settings);
 }
+
 void CloseKeyboard(){
     tcsetattr(0, TCSANOW, &initial_settings);
 }
 
-static int kbhit(){
+inline static int kbhit(){
     char ch;
     int nread;
     if(peek_character != -1)
@@ -33,7 +34,7 @@ static int kbhit(){
 	return 0;
 }
 
-static int readch(){
+inline static int readch(){
     char ch;
     int nread = -1;
     if(peek_character != -1){

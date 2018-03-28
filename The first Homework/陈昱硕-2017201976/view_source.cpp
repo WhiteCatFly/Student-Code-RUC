@@ -53,7 +53,7 @@ static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream){
 	return size * nmemb;
 }
 
-static char *Normalize(const char *web_site, char *content){
+inline static char *Normalize(const char *web_site, char *content){
 	size_t length_of_web_site = strlen(web_site);
 	static char site[kMaxFileNameLength * 2];
 	memcpy(site, web_site, sizeof(char) * length_of_web_site);
@@ -90,7 +90,7 @@ static char *Normalize(const char *web_site, char *content){
 	return site;
 }
 
-static void SaveFile(const char *web_site, char *buffer){
+inline static void SaveFile(const char *web_site, char *buffer){
 	string *site = new string(Normalize(web_site, buffer));
 	string :: size_type begin = site -> find("://", 0) + strlen("://");
 	string :: size_type end = site -> find_last_of("/");
