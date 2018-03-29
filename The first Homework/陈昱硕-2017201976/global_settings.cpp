@@ -23,7 +23,7 @@ string save_directory = string("./download/");
 int timeout_time = 10;
 int time_interval = 50000;
 
-static void HelpMessage(){
+inline static void HelpMessage(){
 	FILE *fp = fopen("README.md", "r");
 	char *message;
 	message = (char *) malloc(sizeof(char) * 100000);
@@ -33,7 +33,7 @@ static void HelpMessage(){
 	free(message);
 }
 
-static void SetArray(const string &keys, vector<string> &array){
+inline static void SetArray(const string &keys, vector<string> &array){
 	string :: size_type begin = 0;
 	string :: size_type end;
 	do{
@@ -47,7 +47,7 @@ static void SetArray(const string &keys, vector<string> &array){
 	}while (end != keys . length());
 }
 
-static void SetValue(int &value, const string &key){
+inline static void SetValue(int &value, const string &key){
 	for (auto iter : key){
 		if (!isdigit(iter)){
 			fprintf(stderr, "%s isn't an positive interger\n\n", key . c_str());
@@ -58,7 +58,23 @@ static void SetValue(int &value, const string &key){
 	value = atoi(key . c_str());
 }
 
-static void PrintSettings(){
+inline static void NormalizeWebSite(string &web_site){
+	if (web_site . find("://") == string :: npos)
+		web_site = "http://" + web_site;
+	if (web_site . at(web_site . length() - 1) == '/')
+		web_site . erase(web_site . length() - 1);
+}
+
+inline static void NormalizeSeed(){
+	/*for (auto it : seed){
+		NormalizeWebSite(it);
+		cerr << it << endl;
+	}*/
+	for (auto it = seed . begin(); it != seed . end(); it ++)
+		NormalizeWebSite(*it);
+}
+
+inline static void PrintSettings(){
 	cout << "seed : " << endl;
 	for (auto it : seed)
 		cout << '\t' << (it) << endl;
@@ -149,6 +165,7 @@ void InitGlobalSettings(const int &argc, char *argv[]){
 			HelpMessage();
 			exit(1);
 		}
-	}	
+	}
+	NormalizeSeed();
 	PrintSettings();
 }

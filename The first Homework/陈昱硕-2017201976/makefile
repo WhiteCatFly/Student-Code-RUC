@@ -1,5 +1,5 @@
 run : main
-	reset && ./main -s http://www.ruc.edu.cn --key-word=ruc --timeout=100
+	reset && ./main -s www.ruc.edu.cn --key-word=ruc --timeout=100
 
 objects = main.o crawl.o filter.o view_source.o convert.o kbhit.o global_settings.o
 
