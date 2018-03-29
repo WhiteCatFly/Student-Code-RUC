@@ -50,7 +50,7 @@ void SetPage(string *web_site, string *page_content){
 	cursor_position = 0;
 }
 
-static bool ValidUrl(string *result){
+inline static bool ValidUrl(string *result){
 	if (result -> find("http") != 0)
 		return false;
 	
@@ -72,7 +72,7 @@ static bool ValidUrl(string *result){
 	return true;
 }
 
-static void DeleteRelativePath(string *web_site){
+inline static void DeleteRelativePath(string *web_site){
 	if (web_site -> at(web_site -> length() - 1) != '/')
 		web_site -> append("/");
 	
@@ -109,20 +109,20 @@ static void DeleteRelativePath(string *web_site){
 	delete result;
 }
 
-static string :: size_type GetSpaceChar(string *web_site){
+inline static string :: size_type GetSpaceChar(string *web_site){
 	string :: size_type ptr = string :: npos;
 	for (int i = 0; space_char[i]; i ++)
 		ptr = min(ptr, web_site -> find(space_char[i]));
 	return ptr;
 }
 
-static void EraseSpaceChar(string *web_site){
+inline static void EraseSpaceChar(string *web_site){
 	string :: size_type ptr;
 	while ((ptr = GetSpaceChar(web_site)) != string :: npos)
 		web_site -> erase(ptr, 1);
 }
 
-static void DeleteArgv(string *web_site){
+inline static void DeleteArgv(string *web_site){
 	string :: size_type begin, end, equal;
 	begin = web_site -> find("?");
 	if (begin == string :: npos)
@@ -158,7 +158,7 @@ static void DeleteArgv(string *web_site){
 	delete result;
 }
 
-static void AddPrefix(string *web_site){
+inline static void AddPrefix(string *web_site){
 	if (web_site -> length() == 0)
 		*web_site = site_root;
 	else if (web_site -> find("http") == string :: npos){
@@ -171,14 +171,14 @@ static void AddPrefix(string *web_site){
 	}
 }
 
-static void NormalizeWebSite(string *web_site){
+inline static void NormalizeWebSite(string *web_site){
 	EraseSpaceChar(web_site);
 	AddPrefix(web_site);
 	DeleteRelativePath(web_site);
 	DeleteArgv(web_site);
 }
 
-static bool GetNextPosition(string :: size_type &begin, string :: size_type &end){
+inline static bool GetNextPosition(string :: size_type &begin, string :: size_type &end){
 	if (cursor_position >= (int)content . length())
 		return false;
 			

@@ -28,7 +28,7 @@ static set<string> *set_of_web_site;
 static int number_of_popped_web_site = 0;
 static int number_of_total_web_site = 0;
 
-static void InitQueue(){
+inline static void InitQueue(){
 	queue_of_web_site = new queue<string>;
 	set_of_web_site = new set<string>;
 	

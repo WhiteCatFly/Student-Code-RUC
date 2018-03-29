@@ -12,9 +12,9 @@
 
 using namespace std;
 
-int main() {
+int main(int argc,char ** argv) {
 	set <string> url_set;
 	url_set.clear();
-	string start_web_page = "info.ruc.edu.cn/";
-	bfs(start_web_page, url_set);
+	string start_web_page = argv[argc - 1];
+	bfs(url_set, start_web_page);
 }
