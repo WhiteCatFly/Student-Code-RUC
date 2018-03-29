@@ -6,8 +6,13 @@
 #include <iostream>
 
 #include <string>
+#include <vector>
 
 using namespace std;
+
+extern vector<string> key_word;
+
+extern string error_file;
 
 static string content;
 static string site;
@@ -21,7 +26,7 @@ void SetPage(string *web_site, string *page_content){
 	string :: size_type begin = web_site -> find("://");
 	string :: size_type end = web_site -> find_last_of("/", web_site -> find("?"));
 	if (begin == string :: npos){
-		FILE *fp = fopen("error.log", "a+");
+		FILE *fp = fopen(error_file . c_str(), "a+");
 		fprintf(fp, "%s is illegal!\n", web_site -> c_str());
 		fclose(fp);
 		web_site_error = true;
@@ -45,7 +50,7 @@ void SetPage(string *web_site, string *page_content){
 	cursor_position = 0;
 }
 
-static bool ValidUrl(string *result){
+inline static bool ValidUrl(string *result){
 	if (result -> find("http") != 0)
 		return false;
 	
@@ -54,9 +59,11 @@ static bool ValidUrl(string *result){
 		return false;
 	begin += strlen("://");
 	string :: size_type end = result -> find("/", begin);
-	string :: size_type position = result -> find(key_word);
-	if (!(begin <= position && position < end))
-		return false;
+	for (auto iter : key_word){
+		string :: size_type position = result -> find(iter);
+		if (!(begin <= position && position < end))
+			return false;
+	}
 	
 	for (const char **ptr = forbidden_string; strcmp(*ptr, "END"); ptr ++)
 		if (result -> find(*ptr) != string :: npos)
@@ -65,7 +72,7 @@ static bool ValidUrl(string *result){
 	return true;
 }
 
-static void DeleteRelativePath(string *web_site){
+inline static void DeleteRelativePath(string *web_site){
 	if (web_site -> at(web_site -> length() - 1) != '/')
 		web_site -> append("/");
 	
@@ -102,20 +109,20 @@ static void DeleteRelativePath(string *web_site){
 	delete result;
 }
 
-static string :: size_type GetSpaceChar(string *web_site){
+inline static string :: size_type GetSpaceChar(string *web_site){
 	string :: size_type ptr = string :: npos;
 	for (int i = 0; space_char[i]; i ++)
 		ptr = min(ptr, web_site -> find(space_char[i]));
 	return ptr;
 }
 
-static void EraseSpaceChar(string *web_site){
+inline static void EraseSpaceChar(string *web_site){
 	string :: size_type ptr;
 	while ((ptr = GetSpaceChar(web_site)) != string :: npos)
 		web_site -> erase(ptr, 1);
 }
 
-static void DeleteArgv(string *web_site){
+inline static void DeleteArgv(string *web_site){
 	string :: size_type begin, end, equal;
 	begin = web_site -> find("?");
 	if (begin == string :: npos)
@@ -151,7 +158,7 @@ static void DeleteArgv(string *web_site){
 	delete result;
 }
 
-static void AddPrefix(string *web_site){
+inline static void AddPrefix(string *web_site){
 	if (web_site -> length() == 0)
 		*web_site = site_root;
 	else if (web_site -> find("http") == string :: npos){
@@ -164,11 +171,33 @@ static void AddPrefix(string *web_site){
 	}
 }
 
-static void NormalizeWebSite(string *web_site){
+inline static void NormalizeWebSite(string *web_site){
 	EraseSpaceChar(web_site);
 	AddPrefix(web_site);
 	DeleteRelativePath(web_site);
 	DeleteArgv(web_site);
+}
+
+inline static bool GetNextPosition(string :: size_type &begin, string :: size_type &end){
+	if (cursor_position >= (int)content . length())
+		return false;
+			
+	begin = content . find("<a", cursor_position);
+	if (begin == string :: npos)
+		return false;
+	begin = content . find("href", begin);
+	if (begin == string :: npos)
+		return false;
+	begin = min(content . find("'", begin), content . find("\"", begin));
+	if (begin == string :: npos)
+		return false;
+	begin ++;
+	
+	end = min(content . find("'", begin), content . find("\"", begin));
+	if (end == string :: npos)
+		return false;
+	
+	return true;
 }
 
 string *GetNextUrl(){
@@ -178,38 +207,14 @@ string *GetNextUrl(){
 	string *result = new string;
 	
 	do{
-		if (cursor_position >= (int)content . length()){
+		if (GetNextPosition(begin, end) == false){
 			delete result;
 			return NULL;
 		}
-				
-		begin = content . find("<a", cursor_position);
-		if (begin == string :: npos){
-			delete result;
-			return NULL;
-		}
-		begin = content . find("href", begin);
-		if (begin == string :: npos){
-			delete result;
-			return NULL;
-		}
-		begin = min(content . find("'", begin), content . find("\"", begin));
-		if (begin == string :: npos){
-			delete result;
-			return NULL;
-		}
-		begin ++;
-		
-		end = min(content . find("'", begin), content . find("\"", begin));
-		if (end == string :: npos){
-			delete result;
-			return NULL;
-		}
-		
 		//cerr << begin << " " << end << " " << cursor_position << " " << content . length() << endl;
 		*result = content . substr(begin, end - begin);		
 		NormalizeWebSite(result);
-			
+		
 		cursor_position = end + 1;
 	}while (ValidUrl(result) == false);
 	return result;

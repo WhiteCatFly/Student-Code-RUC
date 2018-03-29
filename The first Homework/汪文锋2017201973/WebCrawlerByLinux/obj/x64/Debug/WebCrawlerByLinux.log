@@ -1,0 +1,17 @@
+﻿  Validating architecture
+  Validating sources
+  Copying sources remotely to '10.43.126.210'
+  Starting remote build
+  Compiling sources:
+  WebCrawler.cpp
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(17,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(31,41): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(35,14): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(37,13): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(41,14): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(54,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(66,34): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(75,34): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(122,22): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+  Linking objects
+  WebCrawlerByLinux.vcxproj -> C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\bin\x64\Debug\WebCrawlerByLinux.out

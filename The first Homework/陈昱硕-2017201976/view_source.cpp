@@ -17,6 +17,12 @@
 
 using namespace std;
 
+extern string error_file;
+extern string save_directory;
+
+extern int timeout_time;
+extern int time_interval;
+
 const static int kMaxFileLength = 10000000;
 const static int kMaxFileNameLength = 240;
 
@@ -24,10 +30,13 @@ static CURL *curl_handle;
 static CURLcode return_code;
 
 void InitViewer(){
+	FILE *fp = fopen(error_file . c_str(), "w");
+	fclose(fp);	
+	
 	return_code = curl_global_init(CURL_GLOBAL_ALL);
 	if (return_code != CURLE_OK){
 		fprintf(stderr, "global_init failed!\n");
-		exit(1);
+		exit(2);
 	}
 	
 	curl_handle = curl_easy_init();
@@ -44,7 +53,7 @@ static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream){
 	return size * nmemb;
 }
 
-static char *Normalize(const char *web_site, char *content){
+inline static char *Normalize(const char *web_site, char *content){
 	size_t length_of_web_site = strlen(web_site);
 	static char site[kMaxFileNameLength * 2];
 	memcpy(site, web_site, sizeof(char) * length_of_web_site);
@@ -75,12 +84,13 @@ static char *Normalize(const char *web_site, char *content){
 	else if (toupper(text[begin]) == 'G'){//gbk
 		memset(buffer, 0, sizeof(char) * strlen(buffer));
 		CodeConvert("GBK", "UTF-8", site, length, buffer, kMaxFileLength);
+		printf("url = %s\n", buffer);
 		return buffer;
 	}
 	return site;
 }
 
-static void SaveFile(const char *web_site, char *buffer){
+inline static void SaveFile(const char *web_site, char *buffer){
 	string *site = new string(Normalize(web_site, buffer));
 	string :: size_type begin = site -> find("://", 0) + strlen("://");
 	string :: size_type end = site -> find_last_of("/");
@@ -104,8 +114,9 @@ static void SaveFile(const char *web_site, char *buffer){
 		fp = fopen((save_directory + *directory + *file_name + ".download") . c_str(), "wb");
 		
 		if (fp == NULL){
-			fp = fopen("error.log", "a+");
+			fp = fopen(error_file . c_str(), "a+");
 			fprintf(fp, "failed to save : %s, %s\n", web_site, site -> c_str());
+			fprintf(fp, "%s\n", buffer);
 			fclose(fp);
 		}
 		else{
@@ -123,26 +134,25 @@ char *Download(const char *web_site){
 	memset(buffer, 0, sizeof(char) * strlen(buffer));
 	
 	curl_easy_setopt(curl_handle, CURLOPT_URL, web_site);
-	curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 10);
+	curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, timeout_time);
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, &write_data);
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, buffer);
 	curl_easy_setopt(curl_handle, CURLOPT_DNS_CACHE_TIMEOUT, 120000);
 	
 	static clock_t last_time = 0;
 	static clock_t interval = clock() - last_time;
-	if (last_time != 0 && interval < CLOCKS_PER_SEC * 0.05)
+	if (last_time != 0 && interval < time_interval)
 		usleep(interval);
 	last_time += interval;
 	
 	return_code = curl_easy_perform(curl_handle);
 	if (return_code != CURLE_OK){
-		FILE *fp = fopen("error.log", "a+");
+		FILE *fp = fopen(error_file . c_str(), "a+");
 		fprintf(fp, "%50s: %s\n", curl_easy_strerror(return_code), web_site);
 		fclose(fp);
 		return NULL;
 	}
-	
-	//Normalize(buffer);
+		
 	SaveFile(web_site, buffer);
 	
 	return buffer;
