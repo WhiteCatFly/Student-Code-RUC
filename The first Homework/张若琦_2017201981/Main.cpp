@@ -1,15 +1,10 @@
 #include <string>
 #include <iostream>
 #include "crawl.h"
-#include "clean.h"
 
-int main(int argc,char * argv[])
+int main()
 {
-	string root_url = argv[1];
-	if (root_url == "clean")
-		clean();
-	else
-		crawl(root_url);
-	
+	string root_url = "info.ruc.edu.cn";
+	crawl(root_url);
 	return 0;
 }
