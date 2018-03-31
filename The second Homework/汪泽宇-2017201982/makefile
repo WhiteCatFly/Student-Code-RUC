@@ -1,18 +1,22 @@
-main: main.o crawl.o download.o extract.o
-	g++ -o main main.o crawl.o download.o extract.o -std=c++11
+OBJ = main.o crawl.o download.o extract.o
+CPP = g++ -std=c++11 -g
 
-main.o: main.cc crawl.h
-	g++ -c main.cc -std=c++11 -g
+main: $(OBJ)
+	$(CPP) -o main $(OBJ)
 
-crawl.o: crawl.cc crawl.h download.h extract.h
-	g++ -c crawl.cc -std=c++11 -g
+main.o: crawl.h
+	$(CPP) -c main.cc
 
-download.o: download.cc download.h
-	g++ -c download.cc -std=c++11 -g
+crawl.o: crawl.h download.h extract.h
+	$(CPP) -c crawl.cc
 
-extract.o: extract.cc extract.h
-	g++ -c extract.cc -std=c++11 -g
+download.o: download.h
+	$(CPP) -c download.cc
 
+extract.o: extract.h
+	$(CPP) -c extract.cc
+
+.PHONY: clean
 clean:
-	rm main main.o craw.o download.o extract.o
+	-rm main $(OBJ)
 
