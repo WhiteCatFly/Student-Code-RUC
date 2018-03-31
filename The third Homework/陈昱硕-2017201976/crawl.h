@@ -27,16 +27,14 @@ class Crawler{
 		
 		Viewer *viewer_;
 		
-		void InitQueue();
-		
 	public : 
 		void Crawl();
 		
 		Crawler(const vector<string> &seed,
 				const vector<string> &key_word,
 				const int &running_mode_ = Restart,
-				const string &input_file_ = "origin.log",
-				const string &output_file_ = "origin.log",
+				const string &input_file = "origin.log",
+				const string &output_file = "origin.log",
 				const string &error_file = "error.log",
 				const string &save_directory = "./download/",
 				const int &timeout_time = 10,

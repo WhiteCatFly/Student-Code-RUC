@@ -2,6 +2,11 @@
 
 #include <ctime>
 
+static const int sleep_time = 50000;
+
+static struct termios initial_settings, new_settings;
+static int peek_character = -1;
+
 void InitKeyboard(){
     tcgetattr(0, &initial_settings);
     new_settings = initial_settings;
@@ -40,16 +45,7 @@ inline static int readch(){
     if(peek_character != -1){
         ch = peek_character;
         peek_character = -1;
-        for (;nread != 0;){
-        	new_settings.c_cc[VMIN] = 0;
-			tcsetattr(0, TCSANOW, &new_settings);
-			nread = read(0, &ch, 1);
-			new_settings.c_cc[VMIN] = 1;
-			tcsetattr(0, TCSANOW, &new_settings);
-        }
-        return ch;
     }
-    //nread = read(0,&ch,1);
     for (;nread != 0;){
     	new_settings.c_cc[VMIN] = 0;
 		tcsetattr(0, TCSANOW, &new_settings);
@@ -69,7 +65,7 @@ void CheckKeyboard(){
 			fprintf(stderr, "\033[37m");
 			ch = '\0';
 			while (ch != 'p' && ch != 'q'){
-				usleep(CLOCKS_PER_SEC * 0.05);
+				usleep(sleep_time);
 				if (kbhit())
 					ch = readch();
 			}
