@@ -5,16 +5,17 @@
 #include "download.h"
 #include "find_url.h"
 #include "bfs.h"
+#include "normalization.h"
 
 using namespace std;
 
-static void queue_intialize(queue <string> &url_queue, string start_web_page) {
+inline static void queue_intialize(queue <string> &url_queue, const string & start_web_page) {
 	while (url_queue.empty() == false)
 		url_queue.pop();
 	url_queue.push(start_web_page);
 }
 
-void bfs(string start_web_page, set <string> &url_set) {
+void bfs(set <string> &url_set, const string & start_web_page) {
 	queue <string> url_queue;
 	queue_intialize(url_queue, start_web_page);
 	url_set.clear();
@@ -22,21 +23,24 @@ void bfs(string start_web_page, set <string> &url_set) {
 	while (url_queue.empty() == false) {
 		string now_web_page = url_queue.front();
 		url_queue.pop();
-		if (now_web_page.length() >= 150 || now_web_page.find("+") != -1)
+		if (now_web_page.length() >= 150)
 			continue;
-		//cout<<now_web_page<<endl;
+		bool ban_flag = false;
+		for (int i = 0; i < ban_num; ++i)
+			if (now_web_page.find(ban_str[i]) != -1)
+				ban_flag = true;
+		if (ban_flag) continue;
 		page_download(now_web_page);
 		int url_number = count_url(now_web_page);
-		string* url_list = get_url(now_web_page,url_number);
+		string* url_list = new string[url_number];
+		get_url(url_list, now_web_page);
 		for (int i = 0; i < url_number ; ++i) 
 			if (url_list[i] != "") {
-				//cout<<url_list[i]<<"!"	<<endl;
 				if (url_set.count(url_list[i]) == 0) {
-					//cout<<"!"<<endl;
 					url_set.insert(url_list[i]);
 					url_queue.push(url_list[i]);
 				}
 			}
+		delete[] url_list;
 	}
 }
-

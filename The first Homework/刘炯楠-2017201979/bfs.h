@@ -1,12 +1,12 @@
-#ifndef BFS_H
-#define BFS_H
+#ifndef BFS_H_INCLUDED
+#define BFS_H_INCLUDED
 
-#include<string>
-#include<queue>
-#include<set>
+#include <string>
+#include <queue>
+#include <set>
+#include "normalization.h"
 
-using namespace std;
 
-static void queue_intialize(queue <string> &url_queue, string start_web_page);
-void bfs(string start_web_page, set <string> &url_set);
+inline static void queue_intialize(std::queue <std::string> & url_queue, const std::string & start_web_page = TOP_NAME);
+void bfs(std::set <std::string> & url_set, const std::string & start_web_page = TOP_NAME);
 #endif

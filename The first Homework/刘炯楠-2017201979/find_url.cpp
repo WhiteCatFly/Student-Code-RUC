@@ -8,7 +8,7 @@
 
 using namespace std;
 
-static FILE* open_page(string web_page) {
+inline static FILE* open_page(const string web_page) {
 	char * file_name;
 	file_name = normalize_file_name(web_page);
 	FILE * file_pointer;
@@ -17,12 +17,12 @@ static FILE* open_page(string web_page) {
 	return file_pointer;
 }
 
-int count_url(string now_web_page) {
+int count_url(const string now_web_page) {
 	FILE * file_pointer;
 	
 	file_pointer = open_page(now_web_page);
 	fseek(file_pointer, 0, SEEK_END);
-	int len = ftell(file_pointer);
+	const int len = ftell(file_pointer);
 	char *page_char_array = (char *)malloc((len + 1) * sizeof(char));
 	fseek(file_pointer, 0, SEEK_SET);
 	
@@ -40,14 +40,11 @@ int count_url(string now_web_page) {
 	return url_number;
 }
 
-string* get_url(string now_web_page,int url_number) {
-
-	string *url_list = new string[url_number];
-
+void get_url(string * & url_list, const string now_web_page) {
 	FILE * file_pointer;
 	file_pointer = open_page(now_web_page);
 	fseek(file_pointer, 0, SEEK_END);
-	int len = ftell(file_pointer);
+	const int len = ftell(file_pointer);
 	char *page_char_array = (char *)malloc((len + 1) * sizeof(char));
 	fseek(file_pointer, 0, SEEK_SET);
 	
@@ -58,7 +55,6 @@ string* get_url(string now_web_page,int url_number) {
 	int position = -1;
 	int url_count = 0;
 	
-
 	while ((position = page_string.find(URL_SIGN, position + 1)) != -1) {
 		string original_url = "";
 		position += URL_SIGN_LENGTH; 
@@ -66,12 +62,11 @@ string* get_url(string now_web_page,int url_number) {
 			original_url = original_url + page_string[i];
 		}
 		if (original_url.find(now_web_page) != -1 || original_url.find("http") == -1) {
-			url_list[url_count] = normalize_url(original_url, now_web_page);
+			normalize_url(url_list[url_count], original_url, now_web_page);
 			url_count++;
 		}
 	}
 	
 	free(page_char_array);
 	fclose(file_pointer);
-	return url_list;
 }
