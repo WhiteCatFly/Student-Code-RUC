@@ -31,10 +31,8 @@ int main ()
     	    command = (char *) malloc (300 * sizeof (char));
     	    string store = first_queue ;                    //保存一下first_queue,因为后面函数中引用会修改
 			CreatCommand (first_queue,command) ;
-			cout<<first_queue<<"     ---------first_queue"<<endl;
 			first_queue = reput ( first_queue);
     	    const char * char_first_queue =first_queue.c_str() ;//把url转化成char数组形式，也就是相应文件名
-    	    cout << char_first_queue << "---------wenjianming" << endl ;
     	    FILE * fp = fopen (char_first_queue,"r");
     	    fseek (fp,0,SEEK_END);
     	    int len = ftell(fp); 
@@ -60,7 +58,6 @@ void CreatCommand (string &linking,const char *  transmission ){
 	linking = translate (linking);
 	result = result + linking + " " + mid_value;
 	transmission = result.c_str();
-	cout << transmission<<"------------transmission"<<endl;
 	system (transmission );                                //直接在函数中调用命令行下载
 }
 
