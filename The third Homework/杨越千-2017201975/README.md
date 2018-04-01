@@ -1,23 +1,31 @@
 # spider
-# intro
-	this is a simple RUC crawler <br>
-<br>
-## usage
-		1.<br>
-		ÔÚµ±Ç°Ä¿Â¼ÏÂÔËĞĞ <br>
-		make <br>
-		ÔÚµ±Ç°Ä¿Â¼ÏÂµÃµ½spider <br>
-		./spider url dom time <br>
-		[url] is the web's url that you want to crawl first (default: http://www.ruc.edu.cn) <br>
-		[dom] is such limitation that it should be included in each url the spider crawl (default: ruc.edu.cn ) <br>
-		[time] shows crawling frequency: crawl 10 webs / sleep [time] (microsecond) (default: 500000 (0.5s)) <br> 
-		note: you should omit arguments from right to left orderly, or it will get error <br>
-		È»ºóÔÚµ±Ç°Ä¿Â¼ÏÂ»á°´½¨¶à¼¶Ä¿Â¼µÄĞÎÊ½Éú³ÉÅÀÈ¡µÄÍøÒ³.<br>
+## intro
 
-		2.<br>
-		Ìá¹©ÁËÒ»¸öÅÀ³æÀà: spider.h <br>
-		Needed: spider.cpp bfs.cpp findurl.cpp set.cpp <br>
-		You can set: main.cpp <br>
-<br>		
+this is a simple RUC crawler
+
+## usage
+
+1.<br>
+åœ¨å½“å‰ç›®å½•ä¸‹è¿è¡Œ <br>
+make <br>
+åœ¨å½“å‰ç›®å½•ä¸‹å¾—åˆ°spider <br>
+./spider url dom time <br>
+
+[url] is the web's url that you want to crawl first (default: http://www.ruc.edu.cn) <br>
+
+[dom] is such limitation that it should be included in each url the spider crawl (default: ruc.edu.cn ) <br>
+
+[time] shows crawling frequency: crawl 10 webs / sleep [time] (microsecond) (default: 500000 (0.5s)) <br> 
+
+note: you should omit arguments from right to left orderly, or it will get error <br>
+
+ç„¶ååœ¨å½“å‰ç›®å½•ä¸‹ä¼šæŒ‰å»ºå¤šçº§ç›®å½•çš„å½¢å¼ç”Ÿæˆçˆ¬å–çš„ç½‘é¡µ.<br>
+
+2.<br>
+æä¾›äº†ä¸€ä¸ªçˆ¬è™«ç±»: spider.h <br>
+Needed: spider.cpp bfs.cpp findurl.cpp set.cpp <br>
+You can set: main.cpp <br>
+
 ## others
-   default download web: index.html <br>
+
+default download web: index.html <br>
