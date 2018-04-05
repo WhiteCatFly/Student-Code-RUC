@@ -10,15 +10,14 @@
 
 using namespace std;
 
-void download_sleep() {
-	usleep(CLOCKS_PER_SEC * 0.05);
+inline void download_sleep(const double utime) {
+	usleep(CLOCKS_PER_SEC * utime);
 }
 
-void page_download(string web_page) {
-	static int cnt = 0;
+void page_download(const string & web_page) {
 	char * web_page_name = (char *) malloc (4* MAXLEN * sizeof(char));
-	int position = web_page.find("info");
-	int len = web_page.length();
+	const int position = web_page.find("info");
+	const int len = web_page.length();
 	
 	for (int i = position; i < len; ++i) {
 		web_page_name[i - position] = web_page[i];
@@ -36,6 +35,8 @@ void page_download(string web_page) {
 	sprintf(instruction_2, "wget -O '%s' '%s' --tries=3 -T5",file_name, web_page_name);
 
 	system(instruction_2);
+
+	download_sleep();
 
 	free(web_page_name);
 	free(file_name);

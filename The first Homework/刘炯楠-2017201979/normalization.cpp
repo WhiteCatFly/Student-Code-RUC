@@ -5,7 +5,7 @@
 
 using namespace std;
 
-static int find_pos(string web_page) {
+inline static int find_pos(const string & web_page) {
 	int length = web_page.length();
 	int position;
 	for (int i = length - 1; i >= 0; --i) {
@@ -15,7 +15,7 @@ static int find_pos(string web_page) {
 	return position;
 }
 
-char * normalize_file_name(string web_page) {
+char * normalize_file_name(const string & web_page) {
 	char * file_name = (char *) malloc (4 * MAXLEN * sizeof(char));
 	int position = find_pos(web_page);
 	int len = 0;
@@ -32,18 +32,16 @@ char * normalize_file_name(string web_page) {
 	return file_name;
 }
 
-char * normalize_directory(string web_page) {
+char * normalize_directory(const string & web_page) {
 	char * directory = (char *) 	malloc (4 * MAXLEN * sizeof(char));
-	int length = web_page.length();
-	int position = find_pos(web_page);
+	const int position = find_pos(web_page);
 	int len = 0;
 	for (int i = 0; i < position; ++i) directory[len++] = web_page[i];
 	directory[len] = '\0';
 	return directory;
 }
 
-string normalize_url(string original_url, string now_web_page) {
-	string normal_url = "";
+void normalize_url(string & normal_url, const string & original_url, const string & now_web_page) {
 	if (original_url.find(now_web_page) == -1) {
 		if (original_url.find("http") == -1) {
 			int length = now_web_page.length();
@@ -66,5 +64,4 @@ string normalize_url(string original_url, string now_web_page) {
 		else
 			normal_url = original_url;	
 	}
-	return normal_url;
 }
