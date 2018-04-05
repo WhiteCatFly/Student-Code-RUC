@@ -220,7 +220,6 @@ string *Filter :: GetNextUrl(){
 			delete result;
 			return NULL;
 		}
-		//cerr << begin << " " << end << " " << cursor_position_ << " " << content_ . length() << endl;
 		*result = content_ . substr(begin, end - begin);
 		NormalizeWebSite(result);
 		
