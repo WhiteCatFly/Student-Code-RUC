@@ -23,8 +23,9 @@ const char Filter :: space_char[] = "\t" "\f" "\v" "\n" "\r" " ";
 vector<string> Filter :: key_word_;
 
 Filter :: Filter(const string &error_file,
-			  		  const string &web_site,
-					  Viewer *viewer) :
+				 const string &web_site,
+				 Viewer *viewer,
+				 int retry_count) :
 	error_file_(error_file), site_(web_site),
 	cursor_position_(0), web_site_error_(false)
 {
@@ -49,8 +50,13 @@ Filter :: Filter(const string &error_file,
 		site_root_ = web_site;
 	}
 	
-	if (viewer -> Download(site_, content_) != 0)
-		web_site_error_ = true;
+	while (viewer -> Download(site_, content_) != 0){
+		if (retry_count == 0){
+			web_site_error_ = true;
+			break;
+		}
+		retry_count --;
+	}
 }
 
 bool Filter :: ValidUrl(string *result){
