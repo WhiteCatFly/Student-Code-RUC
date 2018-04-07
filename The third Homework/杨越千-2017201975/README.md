@@ -28,6 +28,8 @@ You can set: main.cpp <br>
 
 ## others
 
-default download web: index.html <br>
+default download web: index.html
+
 查看当前默认index方法: ask_index()
+
 修改当前默认index方法: set_index(string)
