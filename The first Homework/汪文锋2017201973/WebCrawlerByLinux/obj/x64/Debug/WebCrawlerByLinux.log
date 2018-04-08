@@ -4,14 +4,16 @@
   Starting remote build
   Compiling sources:
   WebCrawler.cpp
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(17,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(31,41): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(35,14): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(37,13): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(41,14): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(54,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(66,34): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(75,34): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\WebCrawler.cpp(122,22): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(17,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(31,41): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(35,14): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(37,13): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(41,14): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(54,34): warning : conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(66,34): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(75,34): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(122,22): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+  WebCrawler_test.cpp
+C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\WebCrawler_test.cpp(7,35): warning : ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
   Linking objects
-  WebCrawlerByLinux.vcxproj -> C:\Users\13615\source\repos\WebCrawlerByLinux\WebCrawlerByLinux\bin\x64\Debug\WebCrawlerByLinux.out
+  WebCrawlerByLinux.vcxproj -> C:\Users\Diashizuka\Documents\GitHub\Student-Code-RUC\The first Homework\汪文锋2017201973\WebCrawlerByLinux\bin\x64\Debug\WebCrawlerByLinux.out
