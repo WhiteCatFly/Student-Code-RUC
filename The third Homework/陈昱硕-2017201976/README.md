@@ -27,6 +27,9 @@
 		
 	--error=file
 		file为保存错误信息的文件名，默认是error.log
+		
+	--retry-count=5
+		设置重试次数，默认为5
 	
 	--timeout=number
 		设置超时时间，number为整数，单位是s，默认是10s

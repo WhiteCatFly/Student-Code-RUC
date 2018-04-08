@@ -22,6 +22,7 @@ class Crawler{
 		
 		queue<string> *queue_of_web_site_;
 		set<string> *set_of_web_site_;
+		int retry_count_;
 		int number_of_popped_web_site_;
 		int number_of_total_web_site_;
 		
@@ -37,6 +38,7 @@ class Crawler{
 				const string &output_file = "origin.log",
 				const string &error_file = "error.log",
 				const string &save_directory = "./download/",
+				const int &retry_count = 5,
 				const int &timeout_time = 10,
 				const int &time_interval = 50000);
 		
