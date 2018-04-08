@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-
+ 
 class Download_file{
 	private :
 		const static int URL_SIGN_LENGTH = 8;

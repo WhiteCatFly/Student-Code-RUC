@@ -7,7 +7,7 @@
 #include "find_url.h"
 #include "bfs.h"
 #include "normalization.h"
-
+ 
 using namespace std;
 
 inline static void queue_intialize(queue <string> &url_queue, const string & start_web_page) {

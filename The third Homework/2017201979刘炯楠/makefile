@@ -11,4 +11,4 @@ find_url.o: find_url.cpp find_url.h normalization.h
 normalization.o: normalization.cpp normalization.h
 	g++ -c normalization.cpp
 clean:
-	rm web_crawler web_crawler.o bfs.o download.o find_url.o normalization.o
+	rm web_crawler web_crawler.o bfs.o download.o find_url.o normalization.o 

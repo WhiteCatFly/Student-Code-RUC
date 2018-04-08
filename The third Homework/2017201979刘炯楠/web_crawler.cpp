@@ -9,7 +9,7 @@
 #include "find_url.h"
 #include "download.h"
 #include "normalization.h"
-
+ 
 using namespace std;
 int main(int argc,const char ** argv) {
 	set <string> url_set;
