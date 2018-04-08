@@ -15,7 +15,7 @@
 const int cmd_maxlen = 1024;
 const int string_maxlen = 1024;
 const int string_maxnum = 100;
-const int def_sleep_time = 500000;//0.5s
+const int def_sleep_time = 500000;
 	
 const int SEED = 257, SEED2 = 263;
 	
@@ -39,9 +39,14 @@ class Spider{
 	bool IfMulti(const std::string &);
 
 	std::set <std::pair<ULL, ULL> > hash_set;
+	std::string index;
 	
   public:
+	Spider();
+	~Spider();
 	void run(std::string = def_url, std::string = def_dom, int = def_sleep_time);
+	std::string ask_index() const;
+	void set_index(std::string);
 	void clear();
 };
 

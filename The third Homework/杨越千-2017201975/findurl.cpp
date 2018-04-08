@@ -16,7 +16,7 @@ bool Spider::IfUrl(string &str, const string &dom)
 {
 	int str_l = str.length();
 	if(!str_l) return 0;
-	for(int i = 0;i < str_l; ++i) if(str[i] == ' ' || str[i] == '{' || str[i] == '}') return 0;
+	for(int i = 0;i < str_l; ++i) if(str[i] == ' ' || str[i] == '{' || str[i] == '}' || str[i] == ',') return 0;
 	//if(str.find(" ", 0) != string::npos) return 0;
 	if(str.find("javascript", 0) != string::npos) return 0;
 	size_t fir_pos = str.find("http", 0), sec_pos = str.find("http", fir_pos + 1);
