@@ -109,6 +109,8 @@ void Crawler :: Crawl(){
 }
 
 Crawler :: ~Crawler(){
+    delete queue_of_web_site_;
+    delete set_of_web_site_;
     delete viewer_;
     CloseKeyboard();
 }
