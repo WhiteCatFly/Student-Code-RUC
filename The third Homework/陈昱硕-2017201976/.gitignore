@@ -1,0 +1,9 @@
+*.in
+*.out
+*.txt
+*.o
+main
+*.log
+*.swp
+*.gout*
+download
