@@ -13,6 +13,7 @@ class Viewer{
 	private : 
 		static const int kMaxFileLength = 10000000;
 		static const int kMaxFileNameLength = 240;
+		static const int kDNSCacheTimeout = 120000;
 		
 		CURL *curl_handle_;
 		CURLcode return_code_;

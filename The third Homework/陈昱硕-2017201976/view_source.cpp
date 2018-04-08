@@ -19,6 +19,7 @@ using namespace std;
 
 const int Viewer :: kMaxFileLength;
 const int Viewer :: kMaxFileNameLength;
+const int Viewer :: kDNSCacheTimeout;
 
 Viewer :: Viewer(const string &error_file,
 				 const string &save_directory,
@@ -137,7 +138,7 @@ int Viewer :: Download(const string &web_site, string &content){
 	curl_easy_setopt(curl_handle_, CURLOPT_TIMEOUT, timeout_time_);
 	curl_easy_setopt(curl_handle_, CURLOPT_WRITEFUNCTION, &write_data);
 	curl_easy_setopt(curl_handle_, CURLOPT_WRITEDATA, &content);
-	curl_easy_setopt(curl_handle_, CURLOPT_DNS_CACHE_TIMEOUT, 120000);
+	curl_easy_setopt(curl_handle_, CURLOPT_DNS_CACHE_TIMEOUT, kDNSCacheTimeout);
 	
 	static clock_t last_time = 0;
 	static clock_t interval = clock() - last_time;
