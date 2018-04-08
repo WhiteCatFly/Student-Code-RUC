@@ -32,7 +32,7 @@ class Crawl{
 		
 };
 
-
+ 
 int main ()
 {
     Crawl bfs_url;
