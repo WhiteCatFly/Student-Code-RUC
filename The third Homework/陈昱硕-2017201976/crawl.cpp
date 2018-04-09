@@ -24,11 +24,12 @@ Crawler :: Crawler(const vector<string> &seed,
 				   const string &output_file,
 				   const string &error_file,
 				   const string &save_directory,
+				   const int &retry_count,
 				   const int &timeout_time,
 				   const int &time_interval) :
 	seed_(seed), input_file_(input_file), output_file_(output_file),
-	error_file_(error_file),
-	queue_of_web_site_(0), number_of_popped_web_site_(0)
+	error_file_(error_file), retry_count_(retry_count),
+	number_of_popped_web_site_(0), number_of_total_web_site_(0)
 {
 	queue_of_web_site_ = new queue<string>;
 	set_of_web_site_ = new set<string>;
@@ -36,9 +37,7 @@ Crawler :: Crawler(const vector<string> &seed,
 	if (running_mode == Load){
 		FILE *fp = fopen(input_file . c_str(), "r");
 		char *buffer = new char[400];
-		//cerr << "test!" << endl;
 		while (fscanf(fp, "%*s%*s%s", buffer) == 1){
-			//cerr << buffer << endl;
 			if (strcmp(buffer, "popped") == 0){
 				number_of_popped_web_site_ ++;
 				queue_of_web_site_ -> pop();
@@ -79,12 +78,13 @@ void Crawler :: Crawl(){
 		fclose(fp);
 		number_of_popped_web_site_ ++;
 		
-		Filter *handle = new Filter(error_file_, *web_site, viewer_);
+		Filter *handle = new Filter(error_file_, *web_site, viewer_, retry_count_);
 		
-		cerr << *web_site << endl;
-		cerr << "popped = " << number_of_popped_web_site_
-			 << ", total = " << number_of_total_web_site_
-			 << ", remained = " << number_of_total_web_site_ - number_of_popped_web_site_ << endl;
+		fprintf(stderr, "%s\n", web_site -> c_str());
+		fprintf(stderr, "popped = %d, total = %d, remained = %d\n",
+						number_of_popped_web_site_,
+						number_of_total_web_site_,
+			 			number_of_total_web_site_ - number_of_popped_web_site_);
 		
 		string *next_url;
 		while ((next_url = handle -> GetNextUrl()) != NULL){
@@ -99,7 +99,7 @@ void Crawler :: Crawl(){
 			delete next_url;
 		}
 		
-		cerr << "end of this file" << endl;
+		fprintf(stderr, "end of this file\n");
 		
 		delete handle;
 		delete web_site;

@@ -40,7 +40,8 @@ class Filter{
 		
 		Filter(const string &error_file,
 			   const string &web_site,
-			   Viewer *viewer);
+			   Viewer *viewer,
+			   int retry_count);
 		
 		~Filter(){}
 };

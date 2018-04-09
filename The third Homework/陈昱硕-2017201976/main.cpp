@@ -14,6 +14,7 @@ int main(int argc, char *argv[]){
 	string output_file = "origin.log";
 	string error_file = "error.log";
 	string save_directory = "./download/";
+	int retry_count = 5;
 	int timeout_time = 10;
 	int time_interval = 50000;
 	
@@ -62,6 +63,10 @@ int main(int argc, char *argv[]){
 			else if (option . find("--error=") == 0){
 				error_file = option . substr(strlen("--error="));
 			}
+			else if (option . find("--retry-count=") == 0){
+				key = option . substr(strlen("--retry-count"));
+				SetValue(retry_count, key);
+			}
 			else if (option . find("--timeout=") == 0){
 				key = option . substr(strlen("--timeout="));
 				SetValue(timeout_time, key);
@@ -93,8 +98,10 @@ int main(int argc, char *argv[]){
 	}
 	NormalizeSeed(seed);
 	
-	Crawler *crawler = new Crawler(seed, key_word, running_mode, input_file, output_file,
-								   error_file, save_directory, timeout_time, time_interval);
+	Crawler *crawler = new Crawler(seed, key_word, running_mode,
+								   input_file, output_file, error_file,
+								   save_directory, retry_count,
+								   timeout_time, time_interval);
 	crawler -> Crawl();
 	return 0;
 }
