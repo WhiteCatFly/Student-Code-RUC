@@ -33,7 +33,7 @@ void Spider::Bfs(string root, string dom, int sleep_time)
 		
 		FindDir(url, dir);
 		dir_len = strlen(dir);
-		if(dir[dir_len - 1] == '/') sprintf(dir + dir_len, "%s", def_index);
+		if(dir[dir_len - 1] == '/') sprintf(dir + dir_len, "%s", this->index.c_str());
 		sprintf(cmd, "wget -q -O '%s' '%s' -T 10 -t 2", dir, url.c_str());
 		system(cmd);
 		if(url_tot % 10 == 0) usleep(sleep_time);
