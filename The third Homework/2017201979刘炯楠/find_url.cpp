@@ -5,7 +5,7 @@
 #include <iostream>
 #include "normalization.h"
 #include "find_url.h"
- 
+
 using namespace std;
 
 const int Download_file::URL_SIGN_LENGTH;
