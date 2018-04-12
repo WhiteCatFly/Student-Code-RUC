@@ -2,7 +2,7 @@
 #define NORMALIZATION_H_INCLUDED
 
 #include <string>
-
+ 
 #ifndef MAXLEN_
 #define MAXLEN_
 const int MAXLEN = 200;

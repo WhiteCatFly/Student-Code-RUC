@@ -2,7 +2,7 @@
 #define DOWNLOAD_H_INCLUDED
 
 #include <string>
-
+ 
 class order{
 	private:
 		static int file_number;

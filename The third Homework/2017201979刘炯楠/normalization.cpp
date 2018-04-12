@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "normalization.h"
-
+ 
 using namespace std;
 
 inline static int find_pos(const string & page_name) {
