@@ -1,7 +1,7 @@
 objects = main.o parser.o
 
 run : main
-	reset && ./main
+	reset && ./main -s in.html -m from_file -l title,body,links
 
 main : $(objects)
 	g++ main.o parser.o -o main -g -Wall --std=c++11

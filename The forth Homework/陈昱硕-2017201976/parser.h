@@ -16,11 +16,9 @@ typedef pair<string, string> PairOfString;//first : tag  second : content
 
 class Parser{
 public:
-    enum Status {FROM_FILE, FROM_STRING};
+    enum Mode {FROM_FILE, FROM_STRING};
 
 private:
-    const static char *output_file_name_;
-
     const static string main_pattern_;
     const static string links_pattern_;
     const static string simple_tags_pattern_;
@@ -36,9 +34,12 @@ private:
     const static regex script_regex_;
 
     static stack<PairOfString> stack_of_tags_;
+
+    const char *output_file_name_;
     vector<string> titles_;
     vector<string> bodies_;
     vector<string> links_;
+    string content_;
 
     void Build(string str);
     void DeleteSpaceChar(string &str);
@@ -47,13 +48,15 @@ private:
 
 public:
     Parser() = default;
-    Parser(const string &str, Status stat = FROM_STRING);
+    Parser(const string &str, Mode stat = FROM_STRING,
+           const char *output_file_name = "output.html");
 
     ~Parser() = default;
 
     const vector<string> &GetTitle(){return titles_;}
     const vector<string> &GetBody(){return bodies_;}
     const vector<string> &GetLinks(){return links_;}
+    vector<string> *GetFromRegex(const regex &user_regex);
 };
 
 #endif

@@ -12,9 +12,13 @@
 
 using namespace std;
 
-typedef sregex_iterator re_iter;
+#define FOR(it, arr, re) for (re_iter it(arr.begin(), arr.end(), re);\
+                            it != end_iter; it ++)
 
-const char * Parser :: output_file_name_ = "output.html";
+typedef sregex_iterator re_iter;
+typedef regex_constants :: syntax_option_type syntax_option_type;
+
+static const re_iter end_iter;//枚举regex匹配用的
 
 const string Parser :: main_pattern_("<!--.*?-->|<(/?[a-z]+).*?>");
 const string Parser :: links_pattern_("href\\s*=\\s*('.*?'|\".*?\")");
@@ -79,16 +83,12 @@ inline static bool isequal(const string &s1, const string &s2){
     return true;
 }
 
-#define FOR(it, arr, re) for (re_iter it(arr.begin(), arr.end(), re);\
-                            it != end_iter; it ++)
-
 void Parser :: Build(string str){
     ClearOutput();
     DeleteSpaceChar(str);
     while (!stack_of_tags_.empty())
         stack_of_tags_.pop();
 
-    re_iter end_iter;//枚举regex匹配用的
     int cur_position, last_position = 0;
     int script_count = 0;
     FOR(it, str, main_regex_){
@@ -107,8 +107,8 @@ void Parser :: Build(string str){
 
         Output(gap);
         Output(all);
-        if (all[1] == '!'){//注释
-
+        if (all[1] == '!'){
+            //注释
         }
         else{//非注释
             FOR(href, all, links_regex_){//提取链接
@@ -118,7 +118,6 @@ void Parser :: Build(string str){
                     links_.push_back(link);
             }
 
-            //cerr << "tag = '" << tag << "' " << all << endl;
             if (regex_match(tag, simple_tags_regex_)){
                 //简单标签
             }
@@ -126,7 +125,7 @@ void Parser :: Build(string str){
                 if (tag[0] == '/'){//结束标签
                     if (regex_match(tag, script_regex_))
                         script_count --;
-                    if (script_count == 0){
+                    if (script_count == 0){//判断是否在<script></script>内
                         if (stack_of_tags_.empty()){
                             cerr << "invaild pages!" <<
                                 " tag = '" << tag << "'" << endl;
@@ -153,7 +152,7 @@ void Parser :: Build(string str){
                 else{//开始标签
                     if (script_count == 0)
                         stack_of_tags_.push(make_pair(tag, ""));
-                    if (regex_match(tag, script_regex_))
+                    if (regex_match(tag, script_regex_))//判断是否在<script></script>内
                         script_count ++;
                 }
             }
@@ -164,20 +163,32 @@ void Parser :: Build(string str){
     Output(str.substr(last_position));
 }
 
-Parser :: Parser(const string &str, Status stat){
+Parser :: Parser(const string &str, Mode stat,
+                 const char *output_file_name) :
+    output_file_name_(output_file_name)
+{
     if (stat == FROM_STRING){
+        content_ = str;
         Build(str);
     }
     else{
         ifstream input(str.c_str());
         if (!input.is_open()){
-            cerr << "please give a vaild input file!" << endl;
+            cerr << "please give a vaild input file name!" << endl;
             exit(1);
         }
         string tmp, res;
         while (getline(input, tmp))
             res += tmp + "\n";
         input.close();
+        content_ = res;
         Build(res);
     }
+}
+
+vector<string> * Parser :: GetFromRegex(const regex &user_regex){
+    vector<string> *array = new vector<string>;
+    FOR(it, content_, user_regex)
+        array -> push_back(it -> str());
+    return array;
 }
