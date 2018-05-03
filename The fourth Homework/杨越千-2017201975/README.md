@@ -52,25 +52,19 @@ make
    
 		在htmlparser.in输入
 
-		```
 		academic_faculty.php http://info.ruc.edu.cn
-		```
 
    2.测试sound:
 
 		在htmlparser.in输入
 
-		```
 		sope.html http://sope.ruc.edu.cn
-		```
 
    3.测试word:
 
 		在htmlparser.in输入
 
-		```
 		codeforces.html http://codeforces.com
-		```
 
 ## optional usage
 
