@@ -154,18 +154,18 @@ make
 
     查找当前标签下名字为str的标签, 返回一个包含所有标签的vector, 若没有返回一个空vector
 
-	Tag* prev() const{return _pre; }
+	Tag* prev() const;
 
 	返回与当前标签平行的上一个标签(与之有共同父亲的标签),没有返回NULL
 	
-	Tag* next() const{return _nxt; }
+	Tag* next() const;
 
 	返回与当前标签平行的下一个标签(与之有共同父亲的标签),没有返回NULL
 	
-	Tag* fa() const{return _fa;}
+	Tag* fa() const;
 
 	返回父亲标签,没有返回NULL
 	
-	Tag* son() const{return _son; }
+	Tag* son() const;
 
 	返回第一个儿子的标签,没有返回NULL
