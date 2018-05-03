@@ -50,27 +50,27 @@ make
 
    1.测试image:
    
-		在htmlparser.in输入
+     在htmlparser.in输入
 
 		academic_faculty.php http://info.ruc.edu.cn
 
    2.测试sound:
 
-		在htmlparser.in输入
+	 在htmlparser.in输入
 
 		sope.html http://sope.ruc.edu.cn
 
    3.测试word:
 
-		在htmlparser.in输入
+	 在htmlparser.in输入
 
 		codeforces.html http://codeforces.com
 
 ## optional usage
 
-    (详见htmlparser.h)
+(详见htmlparser.h)
 
-    ### HtmlParser类提供的接口
+### HtmlParser类提供的接口
 
     Tag* root();
 
@@ -112,7 +112,7 @@ make
 
     查找名字为str的标签, 返回一个包含所有标签的vector, 若没有返回一个空vector
 
-    ### Tag类提供的接口
+### Tag类提供的接口
 
     std::string name;
 
