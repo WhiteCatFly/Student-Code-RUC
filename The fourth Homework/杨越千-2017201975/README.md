@@ -40,7 +40,7 @@ make
 ./htmlparser
 ```
 
-  控制台会输出该文件的title; 爬取link、image、sound、word的数量, 其中link 表示url链接, image表示图片, sound表示音频, word表示各类常用文件(word,pdf...),
+  控制台会输出该文件的title, 爬取link, image, sound, word的数量, 其中link 表示url链接, image表示图片, sound表示音频, word表示各类常用文件(word,pdf...),
 
   并在当前目录下建立四个子文件夹:link, image, sound, word,分别存储以上四种文件.
 
