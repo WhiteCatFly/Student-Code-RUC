@@ -1,7 +1,7 @@
 objects = main.o parser.o
 
 run : main
-	reset && ./main -s in.html -m from_file -l title,body,links
+	reset && ./main -s in.html -m from_file -l "<(head(?=[\\s>]).*?)>((?!(</\\1>)).)*\\3"
 
 main : $(objects)
 	g++ main.o parser.o -o main -g -Wall --std=c++11

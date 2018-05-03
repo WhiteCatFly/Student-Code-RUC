@@ -12,9 +12,8 @@
 using namespace std;
 
 void HelpMessage();
-void SetArray(vector<string> &array, const string &keys);
 template <class T>
-void OutputArray(const vector<T> &array);
+ostream & operator << (ostream &os, const vector<T> &array);
 
 int main(int argc, char *argv[]){
     string str;
@@ -45,7 +44,7 @@ int main(int argc, char *argv[]){
             }
             else if (cur == "-l" || cur.find("--list=") == 0){
                 key = (cur == "-l") ? argv[++ i] : cur.substr(strlen("--list="));
-                SetArray(list_mode, key);
+                list_mode.push_back(key);
             }
             else
                 HelpMessage();
@@ -58,20 +57,28 @@ int main(int argc, char *argv[]){
     for (const auto &ele : list_mode){
         if (ele == "title"){
             cerr << "title : " << endl;
-            OutputArray(parser -> GetTitle());
+            cerr << parser -> GetTitle() << endl;
         }
         else if (ele == "body"){
             cerr << "body : " << endl;
-            OutputArray(parser -> GetBody());
+            cerr << parser -> GetBody() << endl;
         }
         else if (ele == "links"){
             cerr << "links : " << endl;
-            OutputArray(parser -> GetLinks());
+            cerr << parser -> GetLinks() << endl;
         }
         else{
-            cerr << "regex : " << ele << endl;
-            regex re(ele, regex_constants :: icase);
-            OutputArray(*(parser -> GetFromRegex(re)));
+            try{
+                cerr << "regex : " << ele << endl;
+                regex re(ele, regex_constants :: icase);
+                vector<string> *vec = parser -> GetFromRegex(re);
+                cerr << (*vec) << endl;
+                delete vec;
+            }
+            catch (regex_error &e){
+                cerr << e.what() << endl;
+                cerr << "error code : " << e.code() << endl;
+            }
         }
     }
     return 0;
@@ -91,23 +98,9 @@ void HelpMessage(){
     exit(1);
 }
 
-void SetArray(vector<string> &array, const string &keys){
-    string :: size_type begin = 0;
-    string :: size_type end;
-    do{
-        end = keys . find(",", begin);
-        if (end == string :: npos)
-            end = keys . length();
-
-        array . push_back(keys . substr(begin, end - begin));
-
-        begin = end + 1;
-    }while (end != keys . length());
-}
-
 template <class T>
-void OutputArray(const vector<T> &array){
-    for (const auto &ele : array)
-        cerr << ele << endl;
-    cerr << endl;
+ostream & operator << (ostream &os, const vector<T> &array){
+    ostream_iterator<T> out_iter(cerr, "\n");
+    copy(array.begin(), array.end(), out_iter);
+    return os;
 }

@@ -11,14 +11,12 @@
 #include <regex>
 
 using namespace std;
+using namespace std :: regex_constants;
 
 #define FOR(it, arr, re) for (re_iter it(arr.begin(), arr.end(), re);\
                             it != end_iter; it ++)
 
-typedef sregex_iterator re_iter;
-typedef regex_constants :: syntax_option_type syntax_option_type;
-
-static const re_iter end_iter;//枚举regex匹配用的
+const re_iter Parser :: end_iter = re_iter();
 
 const string Parser :: main_pattern_("<!--.*?-->|<(/?[a-z]+).*?>");
 const string Parser :: links_pattern_("href\\s*=\\s*('.*?'|\".*?\")");
@@ -27,7 +25,6 @@ const string Parser :: title_pattern_("/title");
 const string Parser :: content_tags_pattern_("/p|/h[1-6]|/a|/body");
 const string Parser :: script_pattern_("/?script");
 
-static const auto icase = regex_constants :: icase;
 const regex Parser :: main_regex_(Parser :: main_pattern_, icase);
 const regex Parser :: links_regex_(Parser :: links_pattern_, icase);
 const regex Parser :: simple_tags_regex_(Parser :: simple_tags_pattern_, icase);
@@ -86,6 +83,7 @@ inline static bool isequal(const string &s1, const string &s2){
 void Parser :: Build(string str){
     ClearOutput();
     DeleteSpaceChar(str);
+    content_ = str;
     while (!stack_of_tags_.empty())
         stack_of_tags_.pop();
 
@@ -168,7 +166,6 @@ Parser :: Parser(const string &str, Mode stat,
     output_file_name_(output_file_name)
 {
     if (stat == FROM_STRING){
-        content_ = str;
         Build(str);
     }
     else{
@@ -181,7 +178,6 @@ Parser :: Parser(const string &str, Mode stat,
         while (getline(input, tmp))
             res += tmp + "\n";
         input.close();
-        content_ = res;
         Build(res);
     }
 }

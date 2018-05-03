@@ -19,8 +19,8 @@
     --open=FILE
     设置HTML树的输出文件，默认为output.html
 
-    -l MODE1,MODE2,...
-    --list=MODE1,MODE2,...
+    -l MODE
+    --list=MODE
     设置提取方式，MODE如果是title, body, links中的某一个，则输出对应的内容
     否则将MODE视为正则表达式，匹配模式忽视大小写
 
