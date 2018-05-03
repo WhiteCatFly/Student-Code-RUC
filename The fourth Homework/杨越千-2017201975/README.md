@@ -74,91 +74,91 @@ make
 
 ## optional usage
 
-   (详见htmlparser.h)
+    (详见htmlparser.h)
 
-   ### HtmlParser类提供的接口
+    ### HtmlParser类提供的接口
 
-   Tag* root();
+    Tag* root();
 
-   返回根标签的指针,没有返回NULL
+    返回根标签的指针,没有返回NULL
    
-   std::string title() const;
+    std::string title() const;
 
-   返回标题
+    返回标题
    
-   Tag head() const;
+    Tag head() const;
 
-   返回<head>标签
+    返回<head>标签,没有返回nul_tag (const)
    
-   Tag body() const;
+    Tag body() const;
 
-   返回<body>标签
+    返回<body>标签,没有返回nul_tag
 	
-   int links(std::string path = def_path, const std::string& file = def_file);
+    int links(std::string path = def_path, const std::string& file = def_file);
 
-   爬取当前文件所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "link", file = "links.txt"
+    爬取当前文件所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "link", file = "links.txt"
    
-   int images(const std::string& path = def_path);
+    int images(const std::string& path = def_path);
 
-   爬取所有图片, path 表示存储目录
+    爬取所有图片, path 表示存储目录
    
-   int sounds(const std::string& path = def_path);
+    int sounds(const std::string& path = def_path);
 
-   爬取所有音频文件, path 表示存储目录
+    爬取所有音频文件, path 表示存储目录
    
-   int words(const std::string& path = def_path);
+    int words(const std::string& path = def_path);
 
-   爬取所有办公文件, path 表示存储目录
+    爬取所有办公文件, path 表示存储目录
 
-   Tag find(const std::string& str) const;
+    Tag find(const std::string& str) const;
 
-   查找名字为str的标签, 若有多个返回第一个, 否则返回nul_tag (const)
+    查找名字为str的标签, 若有多个返回第一个, 否则返回nul_tag (const)
    
-   std::vector<Tag> find_all(const std::string& str) const;
+    std::vector<Tag> find_all(const std::string& str) const;
 
-   查找名字为str的标签, 返回一个包含所有标签的vector, 若没有返回一个空vector
+    查找名字为str的标签, 返回一个包含所有标签的vector, 若没有返回一个空vector
 
-   ### Tag类提供的接口
+    ### Tag类提供的接口
 
-   std::string name;
+    std::string name;
 
-   返回标签名
+    返回标签名
    
-   std::vector<std::string> strs, cmts;
+    std::vector<std::string> strs, cmts;
 
-   标签的正文(strs)和注释(cmts)
+    标签的正文(strs)和注释(cmts)
 	
-   std::map<std::string, std::string> attrs;
+    std::map<std::string, std::string> attrs;
 
-   标签的属性的map
+    标签的属性的map
    
-   const std::string& operator [](const std::string& str) const;
+    const std::string& operator [](const std::string& str) const;
 
-   返回当前标签的属性str的值,如果没有这个属性返回nul_str (const)
+    返回当前标签的属性str的值,如果没有这个属性返回nul_str (const)
    
-   int links(std::string path = def_path, const std::string& file = def_file);
+    int links(std::string path = def_path, const std::string& file = def_file);
 
-   爬取当前标签下(包括子标签)所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "link", file = "links.txt"
+    爬取当前标签下(包括子标签)所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "link", file = "links.txt"
    
-   int images(const std::string& path = def_path);
+    int images(const std::string& path = def_path);
 
-   爬取当前标签下(包括子标签)所有图片, path 表示存储目录
+    爬取当前标签下(包括子标签)所有图片, path 表示存储目录
    
-   int sounds(const std::string& path = def_path);
+    int sounds(const std::string& path = def_path);
 
-   爬取当前标签下(包括子标签)所有音频文件, path 表示存储目录
+    爬取当前标签下(包括子标签)所有音频文件, path 表示存储目录
    
-   int words(const std::string& path = def_path);
+    int words(const std::string& path = def_path);
 
-   爬取当前标签下(包括子标签)所有办公文件, path 表示存储目录
+    爬取当前标签下(包括子标签)所有办公文件, path 表示存储目录
 
-   Tag find(const std::string& str) const;
+    Tag find(const std::string& str) const;
 
-   查找当前标签下名字为str的标签, 若有多个返回第一个, 否则返回nul_tag (const)
+    查找当前标签下名字为str的标签, 若有多个返回第一个, 否则返回nul_tag (const)
    
-   std::vector<Tag> find_all(const std::string& str) const;
+    std::vector<Tag> find_all(const std::string& str) const;
 
-   查找当前标签下名字为str的标签, 返回一个包含所有标签的vector, 若没有返回一个空vector
+    查找当前标签下名字为str的标签, 返回一个包含所有标签的vector, 若没有返回一个空vector
 
 	Tag* prev() const{return _pre; }
 
