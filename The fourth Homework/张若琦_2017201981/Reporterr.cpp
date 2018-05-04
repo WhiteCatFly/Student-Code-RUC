@@ -7,7 +7,13 @@ void Report_file_open_err(const char * filename)
 	exit(1);
 }
 
-void Report_option_err(const char* opt)
+void Report_option_err(const char * opt)
+{
+	cerr << "Error : option " << opt << " not found!" << endl;
+	exit(1);
+}
+
+void Report_option_err(const char opt)
 {
 	cerr << "Error : option " << opt << " not found!" << endl;
 	exit(1);

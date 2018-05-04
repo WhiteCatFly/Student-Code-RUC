@@ -1,7 +1,13 @@
 #ifndef Parser_H_
 #define Parser_H_
 
+#include <regex>
+#include <iostream>
+#include <string>
+#include <sstream>
+
 using std :: string;
+using std :: cout;
 using std :: endl;
 using std :: regex;
 using std :: sregex_iterator;

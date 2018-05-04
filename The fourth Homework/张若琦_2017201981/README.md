@@ -1,45 +1,46 @@
 HTML Parser
 
-简介：
-> ./parser [OPTINE]
-
-参数说明：
+格式：
+> ./parser [OPTINES] [ARGUMENTS]
 
 
-要求第一个参数必须为:
-``--src=url`` 或者 ``--src=file``
+选项参数说明：
 
-接下来请输入你的 url 或者 文件名
+（除help）要求第一个参数必须为:
+``--src=url url`` 或者 ``--src=file filename``
+表示将要解析的文件来自url或者文件filename
 
-
-``--picture=filename``
-
-将html文件里面所有图片存储为filename0，filename1,...默认为空
-
-只有指定url才可以哦～
-
-
+``-t filename``
 ``--title=filename``
+将文件标题存储到filename文件中，filename默认为title.txt
 
-将所有标题存储到filename文件中，默认为title.txt
-
-
-``--url=URL,filename``
-
-将所有链接存储到filename中，默认为urls.txt，url格式为URL，默认为所有url
-
-若只含有一个参数默认为URL，若只设置参数filename，请将URL填为ALL
-
-只有指定url才可以哦～
-
-url请不要输入多余括号……emmmm
-
-
+``-w filename``
 ``--text=filename``
+将文件中所有文本文字存储在filename文件中，filename默认为text.txt
 
-将文件中所有标题和段落所包含的文字存储在filename文件中，默认为text.txt
+``-p filename``
+``--picture=filename``
+将html文件里面所有图片存储为filename0，filename1,...filename默认为空
+*只有指定url才可以哦～*
+
+``-u URL``
+``-s filename``
+``--url=URL``
+``--url-save=filename``
+将所有url链接存储到filename中，默认为urls.txt，url格式为URL（正则表达式），默认为所有url
+*只有指定url才可以哦～*
+*url请不要输入多余括号……emmmm*
+*若指定url格式请在url-save之前输入*
+
+``-h``
+``--help``
+并没有用的帮助
+
+*支持短选项组合（但不可带参）*
+ex. ``-pw``
+
+-------------
 
 用户体验真的是极差呢……(摊手
 
-
-感谢陈大佬！%%%
+**感谢陈大佬！%%%**

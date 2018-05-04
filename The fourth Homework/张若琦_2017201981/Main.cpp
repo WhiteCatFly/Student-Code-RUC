@@ -5,14 +5,20 @@
 #include "Reporterr.h"
 #include "Parser.h"
 
-int main(int argc,char * argv[]) // agrc !
+int main(int argc, char * argv[]) // agrc !
 {
-	const string picture = "picture",text = "text",url = "url",title = "title",ALL = "ALL";
+	const string picture = "picture", text = "text", url = "url", url_save = "url-save", title = "title";
 	const string src = "--src=file";
-	string picture_filename,text_filename("text.txt"),title_filename("title.txt"),url_filename("urls.txt");
+	string picture_filename, text_filename("text.txt"), title_filename("title.txt"), url_filename("urls.txt");
 	string url_format("<a href=\"((http(s)?://)?(.)+?)\"(.)+?>");
 
-	/* *** various of constructors ??? like this ??? */
+	/* help*/
+	string help1 = "--help", help2 = "-h";
+	if (*(argv + 1) == help1 || *(argv + 1) == help2)
+		help_user();
+	/* *** */
+
+	/* *** various of constructors ??? like this ??? *** */
 
 	bool file_tag = (*++ argv == src);
 	// Parser html(file_tag ? (*++ argv) : ((string)(*++ argv))); // type-forced transforming
@@ -35,13 +41,64 @@ int main(int argc,char * argv[]) // agrc !
 		ptr ++;
 		if (*ptr != '-') // -
 		{
-			/* wa keng.jpg*/
+			int opt_len = strlen(ptr);
+			if (opt_len > 1 || i == argc - 4 || i < argc - 4 && **(argv + 1) == '-') 
+			// (short options combination | *) -> no arguments
+			{
+				for (int j = 0; j < opt_len; ptr ++, j ++)
+					switch (*ptr)
+					{
+						case 't':
+							html.parse_title(title_filename);
+							break;
+						case 'w':
+							html.parse_text(text_filename);
+							break;
+						case 'p':
+							html.parse_picture(picture_filename);
+							break;
+						case 's':
+							html.parse_url(url_filename, url_format);
+							break;
+						default :
+							Report_option_err(*ptr);
+					}
+			}
+			else // with arguments
+			{
+				++ argv;
+				++ i;
+				switch (*ptr)
+				{
+					case 't':
+						title_filename = *argv;
+						html.parse_title(title_filename);
+						break;
+					case 'w':
+						text_filename = *argv;
+						html.parse_text(text_filename);
+						break;
+					case 'p':
+						picture_filename = *argv;
+						html.parse_picture(picture_filename);
+						break;
+					case 's':
+						url_filename = *argv;
+						html.parse_url(url_filename, url_format);
+						break;
+					case 'u':
+						url_format = Dispose_regex(*argv);
+						break;
+					default :
+						Report_err();
+				}
+			}
 		}
 		else // --
 		{
 			ptr ++;
 			int pos = find_equalsign(ptr);
-			if (pos != DEFAULT && *(ptr + pos + 1) == ' ')
+			if (pos != DEFAULT && *(ptr + pos + 1) == 0)
 			{
 				Report_err();
 				exit(1);
@@ -71,28 +128,15 @@ int main(int argc,char * argv[]) // agrc !
 			else if (ptr == url)
 			{
 				if (pos != DEFAULT)
-				{
-					int pos_comma = find_comma(ptr + pos + 1);
-
-					if (pos_comma == DEFAULT) // URL
-					{
-						url_format = /*ptr + pos + 1;*/Dispose_regex(ptr + pos + 1);
-					}
-					else // URL(ALL),filename
-					{
-						*(ptr + pos + 1 + pos_comma) = 0;
-						if (*(ptr + pos + 1 + pos_comma + 1) == ' ')
-						{
-							Report_err();
-							exit(1);
-						}
-						
-						if ((ptr + pos + 1) != ALL)
-							url_format = /*ptr + pos + 1;*/Dispose_regex(ptr + pos + 1);
-						url_filename = (ptr + pos + 1 + pos_comma + 1);
-					}
-				}
-				html.parse_url(url_filename,url_format);
+					url_format = Dispose_regex(ptr + pos + 1);
+				else
+					Report_err();
+			}
+			else if (ptr == url_save)
+			{
+				if (pos != DEFAULT)
+					url_filename = (ptr + pos + 1);
+				html.parse_url(url_filename, url_format);
 			}
 			else
 				Report_option_err(ptr);

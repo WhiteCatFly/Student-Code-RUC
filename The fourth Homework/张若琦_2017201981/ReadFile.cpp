@@ -2,20 +2,19 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <regex>
 #include "Parser.h"
 #include "Reporterr.h"
 
 string Parser :: get_file(const char * filename) const
 {
-	std :: ifstream infile(filename,std :: ios :: in | std :: ios :: binary);
+	std :: ifstream infile(filename, std :: ios :: in | std :: ios :: binary);
 	if (infile)
 	{
 		string ret;
-		infile.seekg(0,std :: ios :: end);
+		infile.seekg(0, std :: ios :: end);
 		ret.resize(infile.tellg());
-		infile.seekg(0,std :: ios :: beg);
-		infile.read(&ret[0],ret.size());
+		infile.seekg(0, std :: ios :: beg);
+		infile.read(&ret[0], ret.size());
 		infile.close();
 		return ret;
 	}
