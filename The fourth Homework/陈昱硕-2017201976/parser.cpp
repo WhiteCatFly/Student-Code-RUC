@@ -18,7 +18,17 @@ using namespace std :: regex_constants;
 
 const re_iter Parser :: end_iter = re_iter();
 
-const string Parser :: main_pattern_("<!--.*?-->|<(/?[a-z]+).*?>");
+const string Parser :: main_pattern_(
+    "<(/?(?!script|ruby|code)[a-z]+).*?>"
+    "|"
+    "(<!--((?!-->).)*?-->)"
+    "|"
+    "<script.*?>((?!</script.*?>).)*</script.*?>"
+    "|"
+    "<ruby.*?>((?!</ruby.*?>).)*</ruby.*?>"
+    "|"
+    "<code.*?>((?!</code.*?>).)*</code.*?>"
+);
 const string Parser :: links_pattern_("href\\s*=\\s*('.*?'|\".*?\")");
 const string Parser :: simple_tags_pattern_("br|hr|img|input|param|meta|link|base");
 const string Parser :: title_pattern_("/title");
@@ -88,7 +98,6 @@ void Parser :: Build(string str){
         stack_of_tags_.pop();
 
     int cur_position, last_position = 0;
-    int script_count = 0;
     FOR(it, str, main_regex_){
         string all = it -> str();//main_regex_所匹配的整个标签
         string tag = it -> str(1);//标签名
@@ -105,8 +114,8 @@ void Parser :: Build(string str){
 
         Output(gap);
         Output(all);
-        if (all[1] == '!'){
-            //注释
+        if (tag.empty()){
+            //注释 | script | ruby | code
         }
         else{//非注释
             FOR(href, all, links_regex_){//提取链接
@@ -121,37 +130,30 @@ void Parser :: Build(string str){
             }
             else{
                 if (tag[0] == '/'){//结束标签
-                    if (regex_match(tag, script_regex_))
-                        script_count --;
-                    if (script_count == 0){//判断是否在<script></script>内
-                        if (stack_of_tags_.empty()){
-                            cerr << "invaild pages!" <<
-                                " tag = '" << tag << "'" << endl;
-                            exit(1);
-                        }
-                        PairOfString top = stack_of_tags_.top();
-                        stack_of_tags_.pop();
-                        if (!isequal("/" + top.first, tag)){
-                            cerr << "invaild pages!" <<
-                                " top.first = '" << top.first <<
-                                "' tag = '" << tag << "'" << endl;
-                            exit(1);
-                        }
-                        if (regex_match(tag, title_regex_)){//是标题
-                            if (top.second != "")
-                                titles_.push_back(top.second);
-                        }
-                        if (regex_match(tag, content_tags_regex_)){//是正文
-                            if (top.second != "")
-                                bodies_.push_back(top.second);
-                            }
+                    if (stack_of_tags_.empty()){
+                        cerr << "invaild pages!" <<
+                            " tag = '" << tag << "'" << endl;
+                        exit(1);
+                    }
+                    PairOfString top = stack_of_tags_.top();
+                    stack_of_tags_.pop();
+                    if (!isequal("/" + top.first, tag)){
+                        cerr << "invaild pages!" <<
+                            " top.first = '" << top.first <<
+                            "' tag = '" << tag << "'" << endl;
+                        exit(1);
+                    }
+                    if (regex_match(tag, title_regex_)){//是标题
+                        if (top.second != "")
+                            titles_.push_back(top.second);
+                    }
+                    if (regex_match(tag, content_tags_regex_)){//是正文
+                        if (top.second != "")
+                            bodies_.push_back(top.second);
                     }
                 }
                 else{//开始标签
-                    if (script_count == 0)
-                        stack_of_tags_.push(make_pair(tag, ""));
-                    if (regex_match(tag, script_regex_))//判断是否在<script></script>内
-                        script_count ++;
+                    stack_of_tags_.push(make_pair(tag, ""));
                 }
             }
         }
