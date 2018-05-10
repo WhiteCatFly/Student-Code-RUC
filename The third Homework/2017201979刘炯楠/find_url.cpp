@@ -8,65 +8,58 @@
 
 using namespace std;
 
-inline static FILE* open_page(const string web_page) {
+const int Download_file::URL_SIGN_LENGTH;
+FILE * Download_file::open_page(const string page_name) {
 	char * file_name;
-	file_name = normalize_file_name(web_page);
+	file_name = normalize_file_name(page_name);
+	cout<<file_name<<endl;
 	FILE * file_pointer;
 	file_pointer = fopen(file_name, "r");
 	free(file_name);
 	return file_pointer;
 }
 
-int count_url(const string now_web_page) {
+
+Download_file::Download_file(const string page_name) : m_page_name(page_name) {
 	FILE * file_pointer;
-	
-	file_pointer = open_page(now_web_page);
+	file_pointer = open_page(page_name);
 	fseek(file_pointer, 0, SEEK_END);
-	const int len = ftell(file_pointer);
-	char *page_char_array = (char *)malloc((len + 1) * sizeof(char));
+	file_len = ftell(file_pointer);
+	char * char_file_content = new char[file_len + 1];
 	fseek(file_pointer, 0, SEEK_SET);
 	
-	fread(page_char_array, sizeof(char), len, file_pointer);
-	page_char_array[len] = '\0';
-	string page_string = page_char_array;
+	fread(char_file_content, sizeof(char), file_len, file_pointer);
+	char_file_content[file_len] = '\0';
 	
+	file_content = char_file_content;
+	
+	fclose(file_pointer);
+	delete[] char_file_content;
+}
+
+int Download_file::count_url() const{
 	int url_number = 0;
 	int position = -1;
-	while ((position = page_string.find(URL_SIGN, position + 1)) != std::string::npos) {
+	while ((position = file_content.find(URL_SIGN, position + 1)) != std::string::npos) {
 		url_number++;
 	}
-	free(page_char_array);
-	fclose(file_pointer);
 	return url_number;
 }
 
-void get_url(string * & url_list, const string & now_web_page, const string & limit_name) {
-	FILE * file_pointer;
-	file_pointer = open_page(now_web_page);
-	fseek(file_pointer, 0, SEEK_END);
-	const int len = ftell(file_pointer);
-	char *page_char_array = (char *)malloc((len + 1) * sizeof(char));
-	fseek(file_pointer, 0, SEEK_SET);
-	
-	fread(page_char_array, sizeof(char), len, file_pointer); 
-	page_char_array[len] = '\0';
-	string page_string = page_char_array;
-	
+void Download_file::get_url(std::string* & url_list, const std::string & limit_name) const {
 	int position = -1;
 	int url_count = 0;
 	
-	while ((position = page_string.find(URL_SIGN, position + 1)) != std::string::npos) {
+	while ((position = file_content.find(URL_SIGN, position + 1)) != std::string::npos) {
 		string original_url = "";
-		position += URL_SIGN_LENGTH; 
-		for (int i = position;page_string[i] != '"' ; ++i) {
-			original_url = original_url + page_string[i];
+		position += Download_file::URL_SIGN_LENGTH; 
+		for (int i = position;file_content[i] != '"' ; ++i) {
+			original_url = original_url + file_content[i];
 		}
 		if (original_url.find(limit_name) != std::string::npos || original_url.find(absolute_sign) == std::string::npos) {
-			normalize_url(url_list[url_count], original_url, now_web_page, limit_name);
+			normalize_url(url_list[url_count], original_url, m_page_name, limit_name);
 			url_count++;
 		}
 	}
-	
-	free(page_char_array);
-	fclose(file_pointer);
 }
+		

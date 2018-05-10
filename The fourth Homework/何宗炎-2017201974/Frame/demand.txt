@@ -1,0 +1,11 @@
+htmlparser（html分析器）
+
+构造：文件，string
+
+抽取函数：标题（title h1 ~ h6）, 正文（paragraphs， p）, 抽取链接（url, href）, 按照固定模式抽取etc
+
+实现要求:
+	1.use string, fstream, stringstream
+	*2. use 正则表达式
+	*3. 内部结构为tree结构
+	*4. according to http://htmlparser.sourceforge.net/
