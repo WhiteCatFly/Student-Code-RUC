@@ -5,9 +5,13 @@ this is a simple htmlparser
 
 author: yyq
 
-特点: 使用了HtmlParser类和Tag类,并基于XML标准建立了标签树;
-	  使用了正则表达式(可见consts.h)
+特点: 使用了HtmlParser类和Tag类,并基于XML标准建立了标签树; 使用了正则表达式(可见consts.h)
 
+----- update: 5.10  12:53 -----
+
+增加了爬取正文( texts() )操作.
+
+	  
 ## environment
 
 linux (tested in ubuntu 16.04)
@@ -40,13 +44,13 @@ make
 ./htmlparser
 ```
 
-  控制台会输出该文件的title, 爬取link, image, sound, word的数量, 其中link 表示url链接, image表示图片, sound表示音频, word表示各类常用文件(word,pdf...),
+  控制台会输出该文件的title, 爬取link, text, image, sound, word的数量, 其中link 表示url链接, text表示正文, image表示图片, sound表示音频, word表示各类常用文件(word,pdf...),
 
-  并在当前目录下建立四个子文件夹:link, image, sound, word,分别存储以上四种文件.
+  并在当前目录下建立五个子文件夹:link, text, image, sound, word,分别存储以上五种文件.
 
 ## how to test
 
-   针对四种提取方法提供了三个实例:
+   针对五种提取方法提供了三个实例（提取链接和正文在每一个实例都可以验证）：
 
    1.测试image:
    
@@ -88,9 +92,13 @@ make
 
     返回<body>标签,没有返回nul_tag
 	
-    int links(std::string path = def_path, const std::string& file = def_file);
+    int links(std::string path = def_path, const std::string& file = def_linkfile);
 
-    爬取当前文件所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "link", file = "links.txt"
+    爬取当前文件所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "", file = "links.txt"
+
+	int texts(std::string path = def_path, const std::string& file = def_textfile);
+
+	爬取当前文件所有正文并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "", file = "texts.txt"
    
     int images(const std::string& path = def_path);
 
@@ -132,8 +140,12 @@ make
    
     int links(std::string path = def_path, const std::string& file = def_file);
 
-    爬取当前标签下(包括子标签)所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "link", file = "links.txt"
-   
+    爬取当前标签下(包括子标签)所有链接并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "", file = "links.txt"
+
+	int texts(std::string path = def_path, const std::string& file = def_textfile);
+
+	爬取当前标签下(包括子标签)所有正文并存在一个文件里, path 表示存储目录, file表示存储在哪个文件, 默认path = "", file = "texts.txt"	
+	
     int images(const std::string& path = def_path);
 
     爬取当前标签下(包括子标签)所有图片, path 表示存储目录

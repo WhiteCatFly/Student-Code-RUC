@@ -23,6 +23,7 @@ int main()
 		HtmlParser test(s, url, 1);
 		cout << "title: " << test.title() << endl;
 		cout << "links: " << test.links("link") << endl;
+		cout << "texts: " << test.texts("text") << endl;
 		cout << "images: " << test.images("image") << endl;
 		cout << "sounds: " << test.sounds("sound") << endl;
 		cout << "words: " << test.words("word") << endl;				
@@ -32,6 +33,7 @@ int main()
 		HtmlParser test(html, url, 0);
 		cout << "title: " << test.title() << endl;
 		cout << "links: " << test.links("link") << endl;
+		cout << "texts: " << test.texts("text") << endl;		
 		cout << "images: " << test.images("image") << endl;
 		cout << "sounds: " << test.sounds("sound") << endl;
 		cout << "words: " << test.words("word") << endl;		
