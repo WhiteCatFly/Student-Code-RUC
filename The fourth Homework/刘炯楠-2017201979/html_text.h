@@ -23,17 +23,18 @@ static const char en_sign = '>';
 class html_text{
 private:
 	std::string content;
+	std::string page_name;
 	int length;
 	void normalize_content();
 public:
 	html_text();
-	html_text(std::istringstream & iStr);
-	html_text(std::ifstream & iFile);
+	html_text(std::istringstream & iStr, std::string & name);
+	html_text(std::ifstream & iFile, std::string & name);
 	~html_text();
 	
 	html_text & operator = (const html_text & rval);
 	
-	int find_url(std::string * & list, const std::string & now_web_page) const;
+	int find_url(std::string * & list) const;
 	int find_text(std::string * & list) const;
 	int find_title(std::string * & list) const;
 	int find_by_regex(const std::string & pattern, std::string * & list) const;

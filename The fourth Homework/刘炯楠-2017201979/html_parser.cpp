@@ -73,7 +73,6 @@ string make_pattern(const string & instruction) {
 }
 
 static const int argu_number = 4;
-static string page_name;
 void initialize(html_text & text, int argc, const char ** argv) {
 	if (argc != argu_number) {
 		wrong_put();
@@ -87,30 +86,47 @@ void initialize(html_text & text, int argc, const char ** argv) {
 			wrong_put();
 			exit(1);
 		}
+		string page_name = arg[2];
+		cout<<page_name<<endl;
+		if (page_name[page_name.length() - 1] != seperate_sign)
+			page_name = page_name + seperate_sign;
 		if (arg[0] == kind_str) {
 			istringstream istr(arg[1]);
-			text = html_text(istr);
+			text = html_text(istr, page_name);
 		}
 		if (arg[0] == kind_file) {
 			ifstream ifs(arg[1]);
-			text = html_text(ifs);
+			text = html_text(ifs, page_name);
 		}
-		page_name = arg[2];
-		if (page_name[page_name.length() - 1] != seperate_sign)
-			page_name = page_name + seperate_sign;
 	}
 }
 
 void change_source(html_text & text, const string argu) {
 	int pos_f = argu.find(kind_file);
 	int pos_s = argu.find(kind_str);
+	string ifs_name = "";
+	string page_name;
 	if (pos_f != string::npos) {
-		ifstream ifs(argu.substr(pos_f + kind_file.length() + 1));
-		text = html_text(ifs);
+		int start = pos_f + kind_file.length() + 1;
+		int plc;
+		for (plc = start; argu[plc] != ' ';++plc)
+			ifs_name = ifs_name + argu[plc];
+		ifstream ifs(ifs_name);
+		page_name = argu.substr(plc+1);
+		if (page_name[page_name.length() - 1] != seperate_sign)
+			page_name = page_name + seperate_sign;
+		text = html_text(ifs,page_name);
 	}
 	if (pos_s != string::npos) {
-		istringstream istr(argu.substr(pos_s + kind_str.length() + 1));
-		text = html_text(istr);
+		int start = pos_f + kind_file.length() + 1;
+		int plc;
+		for (plc = start; argu[plc] != ' ';++plc)
+			ifs_name = ifs_name + argu[plc];
+		ifstream ifs(ifs_name);
+		page_name = argu.substr(plc+1);
+		if (page_name[page_name.length() - 1] != seperate_sign)
+			page_name = page_name + seperate_sign;
+		text = html_text(ifs,page_name);
 	}
 }
 
@@ -124,7 +140,7 @@ int main(int argc,const char ** argv) {
 		if (instruction.find( "-1" ) == 0) break;
 		string * list = new string[maxnumber];
 		if (instruction.find( "0" ) == 0) {
-			int count = text.find_url(list,page_name);
+			int count = text.find_url(list);
 			out(instruction, count, list);
 		}
 		if (instruction.find("1") == 0) {

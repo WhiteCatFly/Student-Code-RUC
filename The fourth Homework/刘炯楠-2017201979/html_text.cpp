@@ -16,9 +16,10 @@ html_text::html_text() {
 	length = 0;
 }
 
-html_text::html_text(istringstream & iStr) {
+html_text::html_text(istringstream & iStr, const string & name) {
 	content = "";
 	string temp;
+	page_name = name;
 	while (getline(iStr, temp)) {
 		content = content + temp;
 	}
@@ -26,9 +27,10 @@ html_text::html_text(istringstream & iStr) {
 	normalize_content();
 }
 
-html_text::html_text(ifstream & iFile) {
+html_text::html_text(ifstream & iFile, const string & name) {
 	content =  "";
 	string temp;
+	page_name = name;
 	while (getline(iFile, temp)) {
 		content = content + temp;
 	}
@@ -43,11 +45,12 @@ html_text & html_text::operator = (const html_text & rval) {
 		return *this;
 	content = rval.content;
 	length = rval.length;
+	page_name = rval.page_name;
 	return *this;
 }
 
-int html_text::find_url(string * & list, const string & now_web_page) const {
-	return get_url(content, list, now_web_page);
+int html_text::find_url(string * & list) const {
+	return get_url(content, list, page_name);
 }
 
 int html_text::find_text(string * & list) const{
@@ -79,64 +82,6 @@ void html_text::normalize_content() {
 	content = temp;
 	length = content.length();
 }
-
-/*
-void html_text::make_tree_structure(string * & list) const {
-	list[0] = "";
-	bool html_flag = has_html(content);
-	bool head_flag = has_head(content);
-	bool body_flag = has_body(content);
-	string title = get_title(content);
-	string * p_list = new string[maxnumber];
-	string * h_list = new string[maxnumber];
-	int p_count = find_text(p_list);
-	int h_count = find_title(h_list);
-	
-	if (title != "") {
-		list[0] = list[0] + "\t\t" + title_start + " " + title + " " + title_end + "\n"; 
-	}
-	
-	if (head_flag)
-		list[0] = "\t" + head_start + "\n" + list[0] + "\t" + head_end + "\n";
-	
-	if (body_flag)
-		list[0] = list[0] + "\t" + body_start + "\n";
-	
-	int st1 = 0,st2 = 0;
-	while (st1 < p_count && st2 < h_count) {
-		int h_place = content.find(h_list[st2].substr(head_pos));
-		int p_place = content.find(p_list[st1]);
-		if (p_place < h_place) {
-			add_text(p_list[st1], list[0]);
-			st1++;
-		}
-		if (h_place < p_place) {
-			add_title(h_list[st2], list[0]);
-			st2++;
-		}
-	}
-	if (st2 >= h_count) {
-		while (st1 < p_count) {
-			add_text(p_list[st1], list[0]);
-			st1++;
-		}
-	}
-	if (st1 >= p_count) {
-		while (st2 < h_count) {
-			add_title(h_list[st2], list[0]);
-			st2++;
-		}
-	}
-
-	if (body_flag)
-		list[0] = list[0] + "\t" + body_end + "\n";
-		
-	if (html_flag)
-		list[0] = html_start + "\n" + list[0] + html_end + "\n";
-	delete[] p_list;
-	delete[] h_list;
-}
-*/
 
 void html_text::make_tree_structure(string * & list) const {
 	list[0] = "";
