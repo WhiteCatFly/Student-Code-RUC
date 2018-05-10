@@ -5,15 +5,12 @@ this is a simple htmlparser
 
 author: yyq
 
-特点: 使用了HtmlParser类和Tag类,并基于XML标准建立了标签树;
+特点: 使用了HtmlParser类和Tag类,并基于XML标准建立了标签树; 使用了正则表达式(可见consts.h)
 
-	  使用了正则表达式(可见consts.h)
-
-### ----- update: 5.10, 12:53 -----
+----- update: 5.10  12:53 -----
 
 增加了爬取正文( texts() )操作.
 
-### ---------------
 	  
 ## environment
 
