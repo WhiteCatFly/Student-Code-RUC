@@ -6,9 +6,10 @@
 #include <string>
 #include "download.h"
 #include "normalization.h"
-
+ 
 using namespace std;
-
+int order::file_number = 0;
+const int order::option_len;
 inline static void wrong_put() {
 	cerr<<"wrong!"<<endl;
 	cout<<"the standord format is :"<<endl;
@@ -26,7 +27,7 @@ inline static double stringtof(string tp) {
 	char figure[MAXLEN];
 	for (int i = 0; i < len; ++i)
 		figure[i] = tp[i];
-	figure[len] = '\0';
+	figure[len] = end_sign;
 	return atof(figure);
 }
 
@@ -42,13 +43,13 @@ void order::work(const string &temp, const int kind) {
 	if (kind == 0) {
 		m_limit_name = "";
 		int len = temp.length();
-		for (int i = option_len; i < len; ++i)
+		for (int i = order::option_len; i < len; ++i)
 			m_limit_name += temp[i];
 	}
 	if (kind == 1) {
 		int len = temp.length();
 		string tp = "";
-		for (int i = option_len; i < len; ++i) {
+		for (int i = order::option_len; i < len; ++i) {
 			tp += temp[i];
 			if ((temp[i] < '0' || temp[i] > '9')&&(temp[i] != '.'))
 				wrong_put();
@@ -58,7 +59,7 @@ void order::work(const string &temp, const int kind) {
 	if (kind == 2) {
 		int len = temp.length();
 		string tp = "";
-		for (int i = option_len; i < len; ++i) {
+		for (int i = order::option_len; i < len; ++i) {
 			tp += temp[i];
 			if (temp[i] < '0' || temp[i] > '9')
 				wrong_put();
@@ -68,7 +69,7 @@ void order::work(const string &temp, const int kind) {
 	if (kind == 3) {
 		int len = temp.length();
 		string tp = "";
-		for (int i = option_len; i < len; ++i) {
+		for (int i = order::option_len; i < len; ++i) {
 			tp += temp[i];
 			if ((temp[i] < '0' || temp[i] > '9')&&(temp[i] != '.'))
 				wrong_put();
@@ -84,7 +85,7 @@ void order::download(const string &web_page) const {
 	for (int i = 0; i < len; ++i) {
 		web_page_name[i] = web_page[i];
 	}
-	web_page_name[len] = '\0';
+	web_page_name[len] = end_sign;
 	char * instruction_1 = (char *) malloc ((MAXLEN + EXTRA_LEN)* sizeof (char));
 	char * directory = normalize_directory(web_page);
 	sprintf(instruction_1,"mkdir -p '%s'",directory);
@@ -95,8 +96,11 @@ void order::download(const string &web_page) const {
 	sprintf(instruction_2, "wget -O '%s' '%s' --tries=%d -T%lf",file_name, web_page_name,m_number,m_per_time);
 	cout<<instruction_2<<endl;
 
-	system(instruction_2);
-
+	int echo = system(instruction_2);
+	if (echo == 0) {
+		order::file_number++;
+		cout<<order::file_number<<endl;
+	}
 	usleep(CLOCKS_PER_SEC * m_sleep_time);
 
 	free(web_page_name);
@@ -118,12 +122,12 @@ order::order(const int number,const char ** value) {
 			//cout<<value[i]<<endl;
 			string temp = value[i];
 			int cnt = 0;
-			for (int j = 0;j < 4;++j) {cout<<temp<<' '<<option[j]<<endl;
+			for (int j = 0;j < 4;++j)
 				if (temp.find(option[j]) == 0) {
 					//cout<<i<<' '<<j<<endl;
 					cnt++;
 					work(temp, j);
-				}}
+				}
 			if (cnt != 1)
 				wrong_put();
 		}

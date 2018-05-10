@@ -32,11 +32,11 @@ inline static int kbhit(){
     nread = read(0, &ch, 1);
     new_settings.c_cc[VMIN] = 1;
     tcsetattr(0, TCSANOW, &new_settings);
-	if(nread == 1) {
-		peek_character = ch;
-		return 1;
-	}
-	return 0;
+    if(nread == 1) {
+        peek_character = ch;
+        return 1;
+    }
+    return 0;
 }
 
 inline static int readch(){
@@ -47,32 +47,32 @@ inline static int readch(){
         peek_character = -1;
     }
     for (;nread != 0;){
-    	new_settings.c_cc[VMIN] = 0;
-		tcsetattr(0, TCSANOW, &new_settings);
-		nread = read(0, &ch, 1);
-		new_settings.c_cc[VMIN] = 1;
-		tcsetattr(0, TCSANOW, &new_settings);
+        new_settings.c_cc[VMIN] = 0;
+        tcsetattr(0, TCSANOW, &new_settings);
+        nread = read(0, &ch, 1);
+        new_settings.c_cc[VMIN] = 1;
+        tcsetattr(0, TCSANOW, &new_settings);
     }
     return ch;
 }
 
 void CheckKeyboard(){
-	if (kbhit()){
-		char ch = readch();
-		if (ch == 'p'){
-			fprintf(stderr, "\033[31m");
-			fprintf(stderr, "press p to continue, press q to quit\n");
-			fprintf(stderr, "\033[37m");
-			ch = '\0';
-			while (ch != 'p' && ch != 'q'){
-				usleep(sleep_time);
-				if (kbhit())
-					ch = readch();
-			}
-			if (ch == 'q'){
-				CloseKeyboard();
-				exit(0);
-			}
-		}
-	}
+    if (kbhit()){
+        char ch = readch();
+        if (ch == 'p'){
+            fprintf(stderr, "\033[31m");
+            fprintf(stderr, "press p to continue, press q to quit\n");
+            fprintf(stderr, "\033[37m");
+            ch = '\0';
+            while (ch != 'p' && ch != 'q'){
+                usleep(sleep_time);
+                if (kbhit())
+                    ch = readch();
+            }
+            if (ch == 'q'){
+                CloseKeyboard();
+                exit(0);
+            }
+        }
+    }
 }

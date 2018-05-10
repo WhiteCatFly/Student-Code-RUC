@@ -16,18 +16,15 @@ inline void download_sleep(const double utime) {
 
 void page_download(const string & web_page) {
 	char * web_page_name = (char *) malloc (4* MAXLEN * sizeof(char));
-	const int position = web_page.find("info");
 	const int len = web_page.length();
-	
-	for (int i = position; i < len; ++i) {
-		web_page_name[i - position] = web_page[i];
-	}
-	web_page_name[len - position] = '\0';
 
+	for (int i = 0; i < len; ++i) {
+		web_page_name[i] = web_page[i];
+	}
+	web_page_name[len] = '\0';
 	char * instruction_1 = (char *) malloc (4 * MAXLEN * sizeof (char));
 	char * directory = normalize_directory(web_page);
-	sprintf(instruction_1,"mkdir -p '%s'",directory); 
-	
+	sprintf(instruction_1,"mkdir -p '%s'",directory);
 	system(instruction_1);
 
 	char * file_name = normalize_file_name(web_page);
