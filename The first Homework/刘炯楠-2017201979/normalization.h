@@ -3,15 +3,13 @@
 
 #include <string>
 
-const std::string TOP_NAME = "info.ruc.edu.cn";
-
 #ifndef MAXLEN_
 #define MAXLEN_
 const int MAXLEN = 200;
 #endif
 
-const int ban_num = 3;
-const std::string ban_str[3] = {"+", "@", "javascript"};
+const int ban_num = 5;
+const std::string ban_str[5] = {"+", "@", "javascript", "ftp://", "file://"};
 
 inline static int find_pos(const std::string & web_page);
 char * normalize_directory(const std::string & web_page);

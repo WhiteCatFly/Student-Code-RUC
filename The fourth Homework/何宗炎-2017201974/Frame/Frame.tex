@@ -1,0 +1,352 @@
+\documentclass[7pt, a4paper]{article}
+\usepackage{ctex}
+\usepackage{fontspec,xunicode,xltxtra}
+\usepackage{listings}
+\usepackage{xcolor}
+
+%\lstset{
+%    numbers=left,
+%    numberstyle= \tiny,
+%    keywordstyle= \bf{},  %\color{ blue!70},
+%    commentstyle= \color{red!50!green!50!blue!50},
+%    frame=shadowbox, % 阴影效果
+%    rulesepcolor= \color{ red!20!green!20!blue!20} ,
+%    escapeinside=``, % 英文分号中可写入中文
+%    xleftmargin=1em,xrightmargin=1em, aboveskip=1em,
+%    framexleftmargin=1em
+%}
+\lstset{
+    columns=fixed,
+    numbers=left,                                        % 在左侧显示行号
+    frame=none,                                          % 不显示背景边框
+    backgroundcolor=\color[RGB]{245,245,244},            % 设定背景颜色
+    keywordstyle=\color[RGB]{40,40,255},                 % 设定关键字颜色
+    numberstyle=\footnotesize\color{darkgray},           % 设定行号格式
+    commentstyle=\it\color[RGB]{0,96,96},                % 设置代码注释的格式
+    stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},   % 设置字符串格式
+    showstringspaces=false,                              % 不显示字符串中的空格
+    language=c++,                                        % 设置语言
+}
+\usepackage{amsmath}%数学的库
+\usepackage{graphicx}%图片处理的库
+\usepackage[centerlast]{caption}
+\usepackage[bf, small]{titlesec}
+\usepackage[colorlinks, linkcolor=blue]{hyperref}
+\usepackage[top = 1.0in, bottom = 1.0in, left = 1.0in, right = 1.0in]{geometry}
+
+\setlength{\parskip}{0.5\baselineskip}
+\setlength{\parindent}{2em}
+
+\title{HTMLParser Frame}
+\author{$Hzy9819$}
+
+\begin{document}
+\maketitle
+
+\section{Demand}
+
+\subsection{Structure Mode}
+file, string.
+
+\subsection{Function}
+extract :
+
+1.title(tag: h1 $\sim$ h6);
+
+2.text(tag: p, b, code, em, font, i...);
+
+3.url(tag: href);
+
+...
+
+\subsection{Demand}
+1.use string, fstream, stringstream.
+
+2*.use Regular Expression.
+
+3*.Tree structure.
+
+4*.Reference to \url{http://htmlparser.sourceforge.net/}
+
+\section{Frame}
+Is a good idea to use tree structure to reserve html codes.
+
+\subsection{Members}
+
+\subsubsection{Parser}
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+class Parser {
+private:
+    Node Head, Body;
+    Tag HTML;
+public:
+    Parser() {}
+    ~Parser() ;
+    Parser(Node hd, Node bd, Tag T) : Head(hd), Body(bd), HTML(T) {}
+    Parser(stringstream & ss) ;
+    Parser(const char * f) {
+	using namespace std;
+	fstream in(f);
+	stringstream ss;
+	ss << in.rdbuf();
+	*this = Parser{ss};
+    }
+    Parser(std::string s) {
+	std::stringstream ss;
+	ss.str(s);
+	*this = Parser{ss};
+    }
+    void ShowHead(long long mode);
+    void ShowBody(long long mode);
+    void clear();
+};
+\end{lstlisting}
+}
+\underline{\bf{In fact we can change file and string into a stream,}}
+
+\underline{\bf{so that we only need A stream's structure function .}}
+\subsubsection{Node}
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+class Node {
+private:
+	Tag Mtag ;
+	vector< Node > SubNode ;
+	string Text ;
+public:
+	Node() {}
+	~Node() ;
+	Node(Tag T, vector< Node > * SN, string tx) {
+		...
+	}
+	void SetTag(Tag T) ;
+	void AddSubNode(Node p) ;
+	void AddText(string s);
+	Tag CheckTag() ;
+
+	Node FindTag(string s);
+	void ShowTag(long long mode) ;
+	void ShowText() ;
+	bool CheckType(long long mode) ;
+	void ShowSubNode(long long mode);
+	void clear();
+};
+\end{lstlisting}}
+\underline{\bf{use bitmask express one kind of mode avoid too much port. }}
+
+\underline{\bf{And the mode config will be shown in global-setting.}}
+\subsubsection{Tag}
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+class Tag {
+private:
+	string TagName;
+	long long TagType;
+	vector< Attribute > ATT;
+public:
+	Tag() {}
+	~Tag() ;
+	void SetTagType(string s);
+	Tag(string Typ, vector< Attribute > * att) {
+		...
+	}
+	string CheckTagName() ;
+	long long ShowType();
+	void ShowTagName();
+	void ShowAttribute(long long mode);
+	
+	void AddAttribute(Attribute att);
+	void clear();
+};
+
+\end{lstlisting}
+}
+\underline{\bf{divide Tag into different types is convenience to extract different kind of information. }}
+\subsubsection{Attribute}
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+struct Attribute {
+    std::string Type, Value;
+    Attribute() {}
+    Attribute(std::string tp, std::string val) : Type(tp), Value(val) {}
+    void Show(long long mode) ;
+    void clear() ;
+};
+\end{lstlisting}
+}
+\underline{\bf{maybe is no use ?}}
+\underline{\bf{Some information can be hidden in the attributions}}
+
+\subsection{Detail}
+\subsubsection{structure}
+We use a stream to input the website(html code), it's easy to divide the code into tag and texts.
+So that we just need to find each $'<'$ and $'>'$ to find a tag. But it's also a matter to know a tag's scope(some tag has a $</>$ to stop it with some not), it forces us to list those special tags who need a $</>$ to stop in the global-setting.
+
+When it comes to a tag, we also need to analyze the tag-name and select one or more tag-type(title, text, url...) to standard it. Also, attribute should not be left.
+
+Then things become easy, we just need find tag $->$ analyze tag $->$ input text $->$ find next tag.
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+Tag Build_Tag(std::string s) {
+    using namespace std;
+    int n = s.size() - 1, p = 1;
+    string Name, typ, val;
+    bool SetName = 0;
+    Tag T;
+    while(p < n) {
+        if(s[p] == Space) {
+            do {
+                ++p;
+	    }while(p < n && s[p] == Space);
+            continue;
+        }
+        if(!SetName) {
+            while(p < n && s[p] != Space) Name += s[p++];
+	    Name = Tolower(Name);
+            T.SetTagType(Name);
+            SetName = 1;
+        }
+        else {
+            typ = val = Empty;
+            while(p < n && s[p] != Space && s[p] != EqualMark)
+                 typ += s[p++];
+            if(s[p] == EqualMark) {
+                do {
+                    ++p;
+		}while(p < n && s[p] == Space);
+                if(s[p] != QuateMark)
+                    while(p < n && s[p] != Space) val += s[p++];
+                else {
+		    do {
+			val += s[p++];
+		    }while(p < n && s[p] != QuateMark);			
+                    if(p < n) val += s[p++];
+                }
+            }
+            Attribute att(typ, val);
+            T.AddAttribute(att);
+        }
+    }
+    return T;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+std::string Build_Node(Node & n, std::stringstream & st,
+     std::string tagname, std::string Lef) {
+    using namespace std;
+    string temp = Empty, tmp = Lef;
+    size_t p1, p2;
+    bool b1 = 0, b2 = 0;
+    do {
+        temp = temp + Spacestring + tmp;
+	
+        if(!b1) p1 = tmp.find(LeftMark, 0);
+        if(!b2) p2 = tmp.find(RightMark, 0);
+        if(!b1 && (p1 != string::npos)) 
+            b1 = 1;
+        if(!b2 && (p2 != string::npos)) 
+            b2 = 1;
+	
+        if(b1 && b2) {
+            p1 = temp.find(LeftMark, 0);
+            p2 = temp.find(RightMark, 0);
+	    if(p1 > p2) {
+		tmp = temp.substr(0, p2);
+		n.AddText(tmp);
+		tmp = temp.substr(p2 + 1);
+		temp = Empty;
+		b1 = b2 = 0;
+		continue;
+	    }		
+	
+            tmp = temp.substr(0, p1);
+            n.AddText(tmp);
+	
+            tmp = temp.substr(p1, p2 - p1 + 1);
+            Tag T = Build_Tag(tmp);
+            tmp = temp.substr(p2 + 1);
+	    temp = Empty;
+	
+	    b1 = b2 = 0;
+            if(AssMark + tagname == T.CheckTagName())
+		return tmp;
+	    if(IgnoreMark == T.CheckTagName().at(0) 
+            || AssMark == T.CheckTagName().at(0))
+		continue;
+
+	
+            Node sn;
+	    sn.SetTag(T);
+
+	
+	    if(CheckBanner(T.CheckTagName())) {
+		do {
+		    temp = temp + Spacestring + tmp;
+		    if(Tolower(tmp).find(AssMark + T.CheckTagName(), 0) 
+                != string::npos) {
+			
+			string tp = Empty;
+			tp += LeftMark, 
+                tp += AssMark, 
+                    tp += T.CheckTagName() + RightMark;
+			
+			size_t p = Tolower(temp).find(tp, 0);
+			tmp = temp.substr(0, p);
+			sn.AddText(tmp);
+			
+			while(temp[p] != RightMark) p++;
+			tmp = temp.substr(p + 1);
+			temp = Empty;
+			break;
+		    }
+		    if(!(st >> tmp)) break;
+		}while(1);
+	    }
+	    else if(CheckAss(T.CheckTagName()))
+		tmp = Build_Node(sn, st, T.CheckTagName(), tmp) ;
+	    n.AddSubNode(sn);
+	    continue;
+        }
+	if(!(st >> tmp)) break;
+    }while(1);
+    return temp;
+}
+\end{lstlisting}
+}
+\subsubsection{About Bitmask}
+It's a huge work to write a function for extracting different kind of text, so we classify different tag to different kind of text, and use Bitmask to represent it. This method can lower code length effective and easier to use. But it also forces us to define some of constant in global-setting to represent different kind of text. And enumerate tags to classify them is also a slavery.
+
+Here is a sample(no need to regard it as a standard):
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+const LL NoneType = 0;
+const LL Title = (1LL << 0);
+const LL Text = (1LL << 1);
+const LL Url = (1LL << 2);
+const LL Img = (1LL << 3);
+const LL Script = (1LL << 4);
+const LL Button = (1LL << 5);
+const LL Table = (1LL << 6);
+const LL Video = (1LL << 7);
+const LL audio = (1LL << 8);
+const LL ALL = (1LL << 62) + ((1LL << 62) - 1);
+
+const LL Att_Type = (1LL << 0);
+const LL Att_Value = (1LL << 1);
+...
+\end{lstlisting}
+}
+
+\subsubsection{About Banner}
+We need to find each $<>$ in the html code, but in some text(like javascript) we also can find $<>$. That may be a mistake when we deal with it using the method above. So that we do need to skip this kind of text.
+{\setmainfont{Courier New Bold}
+\begin{lstlisting}
+const std::string Banner = " script code ruby ";
+\end{lstlisting}
+}
+
+{\color{white} It's a interesting thing when you fix your bug, and you can see many different kind of website. Have fun, 233333!} 
+
+\end{document}

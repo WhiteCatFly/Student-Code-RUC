@@ -3,78 +3,73 @@
 #include <string>
 #include <iostream>
 #include "normalization.h"
-
+ 
 using namespace std;
 
-inline static int find_pos(const string & web_page) {
-	int length = web_page.length();
-	int position;
+inline static int find_pos(const string & page_name) {
+	int length = page_name.length();
+	int seperate_position;
 	for (int i = length - 1; i >= 0; --i) {
-		if (web_page[i] == seperate_sign)
-			{position = i; break;}
+		if (page_name[i] == seperate_sign)
+			{seperate_position = i; break;}
 	}
-	return position;
+	return seperate_position;
 }
 
-char * normalize_file_name(const string & web_page) {
+char * normalize_file_name(const string & page_name) {
 	char * file_name = (char *) malloc ((MAXLEN + EXTRA_LEN)* sizeof(char));
-	int position = find_pos(web_page);
-	int len = 0;
-	int length = web_page.length();
-	file_name[len++] = 'w';
-	file_name[len++] = 'e';
-	file_name[len++] = 'b';
-	file_name[len++] = 'p';
-	file_name[len++] = 'a';
-	file_name[len++] = 'g';
-	file_name[len++] = 'e';
-	file_name[len++] = '/'; 
-	for (int i = 0; i < length; ++i) file_name[len++] = web_page[i];
-	if (position == length - 1 || ((web_page.find(".", position + 1) + 4 != length) && (web_page.find(".", position + 1) + 5 != length))) {
-		file_name[len++] = '.';
-		file_name[len++] = 'h';
-		file_name[len++] = 't';
-		file_name[len++] = 'm';
-		file_name[len++] = 'l';
+	int seperate_position = find_pos(page_name);
+	int file_name_length = 0;
+	int page_name_length = page_name.length();
+	
+	strcpy(file_name, name_head.c_str());
+	file_name_length = name_head.length();
+	file_name[file_name_length] = end_sign;
+	
+	for (int i = 0; i < page_name_length; ++i) file_name[file_name_length++] = page_name[i];
+	file_name[file_name_length] = end_sign;
+	
+	if (seperate_position == page_name_length - 1 || ((page_name.find(".", seperate_position + 1) + 4 != page_name_length) && (page_name.find(".", seperate_position + 1) + 5 != page_name_length))) {
+		strcat(file_name,name_tail.c_str());
+		file_name_length = file_name_length + name_tail.length();
 	}
-	file_name[len] = '\0';
+	file_name[file_name_length] = end_sign;
+	
 	return file_name;
 }
 
-char * normalize_directory(const string & web_page) {
+char * normalize_directory(const string & page_name) {
 	char * directory = (char *) malloc ((MAXLEN + EXTRA_LEN) * sizeof(char));
-	const int position = find_pos(web_page);
-	int len = 0;
-	directory[len++] = 'w';
-	directory[len++] = 'e';
-	directory[len++] = 'b';
-	directory[len++] = 'p';
-	directory[len++] = 'a';
-	directory[len++] = 'g';
-	directory[len++] = 'e';
-	directory[len++] = '/';
-	for (int i = 0; i < position; ++i) directory[len++] = web_page[i];
-	directory[len] = '\0';
+	const int seperate_position = find_pos(page_name);
+	int directory_length = 0;
+	
+	strcpy(directory, name_head.c_str());
+	directory_length = name_head.length();
+	directory[directory_length] = end_sign;
+	
+	for (int i = 0; i < seperate_position; ++i) directory[directory_length++] = page_name[i];
+	directory[directory_length] = end_sign;
+	
 	return directory;
 }
 
-void normalize_url(string & normal_url, const string & original_url, const string & now_web_page, const string & limit_name) {
+void normalize_url(string & normal_url, const string & original_url, const string & now_page_name, const string & limit_name) {
 	if (original_url.find(limit_name) == std::string::npos) {
 		if (original_url.find(absolute_sign) == std::string::npos) {
-			int length = now_web_page.length();
+			int length = now_page_name.length();
 			if (original_url[0] != seperate_sign) {
-				int last_pos = 0;
+				int last_seperate_pos = 0;
 				for (int i = 0;i < length;++i)
-					if (now_web_page[i] == seperate_sign)
-						last_pos =  i;
-				for (int i = 0;i < last_pos;++i)
-					normal_url = normal_url + now_web_page[i];
+					if (now_page_name[i] == seperate_sign)
+						last_seperate_pos =  i;
+				for (int i = 0;i < last_seperate_pos;++i)
+					normal_url = normal_url + now_page_name[i];
 				normal_url = normal_url + seperate_sign + original_url;
 			}
 			else {
 				for (int i = 0;i < length; ++i) {
-					if (now_web_page[i] == seperate_sign) break;
-					normal_url += now_web_page[i];
+					if (now_page_name[i] == seperate_sign) break;
+					normal_url += now_page_name[i];
 				}
 				normal_url += original_url;
 			}
@@ -87,8 +82,8 @@ void normalize_url(string & normal_url, const string & original_url, const strin
 			int pos = 0;
 			if (pos_1 != (int)std::string::npos) pos = pos_1 + absolute_sign1.length();
 			if (pos_2 != (int)std::string::npos) pos = pos_2 + absolute_sign2.length();
-			int Len = original_url.length();
-			for (int i = pos; i < Len;++i)
+			int length = original_url.length();
+			for (int i = pos; i < length;++i)
 				normal_url += original_url[i];
 			if (original_url.find(seperate_sign,pos) == std::string::npos)
 				normal_url = normal_url + seperate_sign;

@@ -41,6 +41,7 @@ int count_url(const string now_web_page) {
 }
 
 void get_url(string * & url_list, const string now_web_page) {
+	extern string limit_name;
 	FILE * file_pointer;
 	file_pointer = open_page(now_web_page);
 	fseek(file_pointer, 0, SEEK_END);
@@ -61,7 +62,7 @@ void get_url(string * & url_list, const string now_web_page) {
 		for (int i = position;page_string[i] != '"' ; ++i) {
 			original_url = original_url + page_string[i];
 		}
-		if (original_url.find(now_web_page) != -1 || original_url.find("http") == -1) {
+		if (original_url.find(limit_name) != -1 || original_url.find("http") == -1) {
 			normalize_url(url_list[url_count], original_url, now_web_page);
 			url_count++;
 		}
