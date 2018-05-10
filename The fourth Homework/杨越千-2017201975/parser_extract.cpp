@@ -37,6 +37,12 @@ int HtmlParser::links(string path, const string& file)
 	else return _root -> links(path, file);
 }
 
+int HtmlParser::texts(string path, const string& file)
+{
+	if(_root == NULL) return 0;
+	else return _root -> texts(path, file);
+}
+
 int HtmlParser::images(const string& path)
 {
 	if(_root == NULL) return 0;
