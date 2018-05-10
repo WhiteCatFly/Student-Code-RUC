@@ -41,7 +41,8 @@ public:
 	Tag() {_fa = _pre = _nxt = _son = NULL; name = ""; }
 	~Tag() {}
 
-	int links(std::string path = def_path, const std::string& file = def_file);
+	int links(std::string path = def_path, const std::string& file = def_linkfile);
+	int texts(std::string path = def_path, const std::string& file = def_textfile);
 	int images(const std::string& path = def_path); //relative or absolute
 	int sounds(const std::string& path = def_path);
 	int words(const std::string& path = def_path); //docs, excels, pdfs, ...
@@ -84,11 +85,13 @@ public:
 	Tag head() const;
 	Tag body() const;
 	
-	int links(std::string path = def_path, const std::string& file = def_file);
+	int links(std::string path = def_path, const std::string& file = def_linkfile);
+	int texts(std::string path = def_path, const std::string& file = def_textfile);
 	int images(const std::string& path = def_path); //relative or absolute
 	int sounds(const std::string& path = def_path);
 	int words(const std::string& path = def_path); //docs, excels, pdfs, ...
-
+	
+	
 	Tag find(const std::string& str) const;
 	std::vector<Tag> find_all(const std::string& str) const;
 	
