@@ -2,5 +2,5 @@
 
 ## usage
 
-  ÔËÐÐ./goodstring
+  run ./goodstring
 
