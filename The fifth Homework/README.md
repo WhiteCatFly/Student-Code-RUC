@@ -2,5 +2,5 @@
 
 ## usage
 
-运行./goodstring
+  运行./goodstring
 
