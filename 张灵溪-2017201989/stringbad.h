@@ -11,7 +11,10 @@ class stringbad{
 	public:
 	stringbad(const char* s);
 	stringbad();
+	stringbad(const stringbad& s);
 	~stringbad();
-}
+	stringbad& operator=(const char* s);
+	stringbad& operator=(const stringbad& s);
+};
 #endif
 	

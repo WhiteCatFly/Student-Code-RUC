@@ -1,10 +1,10 @@
 #include <iostream>
 #include "stringbad.h"
 using namespace std;
-void callme1(stringbad& rsb)[
+void callme1(stringbad& rsb){
 	cout<<"string passed by reference:   \""<<rsb<<"\"\n";
 }
-void callme2(stringbad sb)[
+void callme2(stringbad sb){
 	cout<<"string passed by value:   \""<<sb<<"\"\n";
 }
 int main(void){
@@ -27,7 +27,7 @@ int main(void){
 		stringbad knot;
 		knot=headline1;
 		cout<<"Knot: "<<knot<<endl;
-		cout<<"Exiting the block.\n"
+		cout<<"Exiting the block.\n";
 	}
 	cout<<"End of main()\n";
 	return 0;
