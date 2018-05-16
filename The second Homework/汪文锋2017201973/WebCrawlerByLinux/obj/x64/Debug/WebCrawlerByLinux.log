@@ -1,0 +1,11 @@
+﻿  Validating architecture
+  Validating sources
+  Copying sources remotely to '10.43.126.210'
+  Starting remote build
+  Compiling sources:
+  WebCrawler.cpp
+D:\RUC\2018-3\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(31,22): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+D:\RUC\2018-3\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(34,38): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+D:\RUC\2018-3\汪文锋2017201973\WebCrawlerByLinux\WebCrawler.cpp(34,82): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+  Linking objects
+  WebCrawlerByLinux.vcxproj -> D:\RUC\2018-3\汪文锋2017201973\WebCrawlerByLinux\bin\x64\Debug\WebCrawlerByLinux.out
