@@ -74,4 +74,5 @@ ostream & operator << (ostream &os, const MyString &str){
 
 MyString :: ~MyString(){
     delete [] str_;
+    number_of_strings_ --;
 }

@@ -19,7 +19,7 @@ public:
     MyString(const MyString &str);
 
     size_t length() const{return length_;}
-    size_t howmany() const{return number_of_strings_;}
+    static size_t howmany(){return number_of_strings_;}
     char & operator [] (size_t idx){return str_[idx];}
     const char & operator [] (size_t idx) const{return str_[idx];}
 
