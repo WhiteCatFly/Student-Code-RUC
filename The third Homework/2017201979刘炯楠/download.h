@@ -2,9 +2,11 @@
 #define DOWNLOAD_H_INCLUDED
 
 #include <string>
-
+ 
 class order{
 	private:
+		static int file_number;
+		const static int option_len = 3;
 		std::string m_limit_name;
 		double m_per_time;
 		int m_number;
@@ -22,6 +24,7 @@ inline static void wrong_put();
 inline static double stringtof();
 inline static int strington();
 
+//int order::file_number = 0;
 const std::string option[4] = {"-L=", "-T=", "-N=", "-S="};
-const int option_len = 3;
+//const int order::option_len;
 #endif
