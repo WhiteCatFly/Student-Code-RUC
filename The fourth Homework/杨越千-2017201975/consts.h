@@ -4,7 +4,7 @@
 #include <regex>
 #include <string>
 
-const std::string def_path = "", def_file = "links.txt";
+const std::string def_path = "", def_linkfile = "links.txt", def_textfile = "texts.txt";
 const int def_mode = 0;
 const std::string nul_str = "";
 
@@ -14,6 +14,6 @@ const std::regex sound_re("(\"|\')?(http://|https://)?([^{}\\s]+/)*[^{}\\.]+\\.(
 const std::regex word_re("(\"|\')?(http://|https://)?([^{}\\s]+/)*[^{}\\.]+\\.(doc|docx|xls|xlsx|ppt|pptx|pdf)[^{}\\s\\.]*");
 const std::regex end_re("[^{}/]+/");
 
-const std::regex tag_re("<\\w.*?>"), str_re("[^<>\\s]+"), s_re("[\\t\\s]*");
+const std::regex tag_re("<[\\w/].*?>"), str_re("[^<>\\t\\s]+"), s_re("[\\t\\s]*");
 
 #endif

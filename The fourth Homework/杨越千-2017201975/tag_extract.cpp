@@ -44,6 +44,15 @@ static int dfs(Tag* ct, int mode, ofstream& ofile, const string& url)
 	return link_sum;
 }
 
+static int textdfs(Tag* ct, ofstream& ofile)
+{
+	int sum = 0;
+	for(auto i = ct -> strs.begin(); i != ct -> strs.end(); ++i) ofile << (*i), sum++;
+	for(Tag* p = ct -> son();p != NULL;p = p -> next())
+		sum += textdfs(p, ofile);
+	return sum;	
+}
+
 static int dfs(Tag* ct, int mode, const string& path, const string& url)
 {
 	int link_sum = 0;
@@ -99,6 +108,23 @@ int Tag::links(string path, const string& file)
 	int num = dfs(this, Tag::_LINK, ofile, this -> url);
 	return num;
 }
+
+int Tag::texts(string path, const string& file)
+{
+	OpenPath(path, file);	
+	if(path.back() != '/') path += '/';
+	path += file;
+	ofstream ofile(path);	
+	if(!ofile.is_open())
+	{
+		cerr << "error: in texts() path "<< path << " not valid." << endl;
+		return 0;
+	}
+
+	int num = textdfs(this, ofile);
+	return num;
+}
+
 
 int Tag::images(const string& path)
 {
