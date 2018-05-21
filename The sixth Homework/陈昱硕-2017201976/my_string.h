@@ -14,6 +14,8 @@ private:
     char *str_;
 
 public:
+    static const size_t npos;
+
     MyString();
     MyString(const char *str);
     MyString(const MyString &str);
@@ -38,10 +40,12 @@ public:
     const char *end() const {return str_ + length_;}
     const char *cend() const {return str_ + length_;}
 
-    void append(char ch);
-    char *find(char ch);
+    void append(const char ch);
+    char *find(const char ch);
     void erase(char *beg, char *ed);
     void erase(char *beg){erase(beg, end());}
+
+    const MyString substr(const char *beg, size_t len = npos);
 
 #define makeoper(op) \
     const bool operator op (const MyString &str) const{\

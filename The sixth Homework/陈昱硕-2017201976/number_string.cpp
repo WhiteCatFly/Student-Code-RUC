@@ -88,14 +88,47 @@ static void FormatWithFlag(MyString &result, int flag, int width){
     }
 }
 
+static bool is_carry(const MyString &res, int pos){
+    if (pos >= (int)res.length() || res[pos] < '5')
+        return false;
+    if (res[pos] > '5')
+        return true;
+    for (int i = pos + 1; i < (int)res.length(); i ++)
+        if (res[pos] != '0')
+            return true;
+    return false;
+}
+
+static void Round(MyString &res, int pos){
+    bool carry = is_carry(res, pos);
+    res.erase(res.begin() + pos);
+    for (int i = pos - 1; i >= 0 && carry; i --){
+        if (res[i] == '.')
+            continue;
+        if (carry){
+            res[i] ++;
+            carry = false;
+        }
+        if (res[i] > '9'){
+            res[i] = '0';
+            carry = true;
+        }
+    }
+    if (carry)
+        res = "1" + res;
+}
+
 MyString NumberString :: PrintDigit(const char *fmt, int begin, int end){
     int flag = GetFlag(fmt, begin, end);
     int width = GetDigit(fmt, begin, end);
     int precision = GetPrecision(fmt, begin, end, 0);
+
+    char *point = find('.'), *beg = this -> begin();
     MyString result;
-    for (int i = 0; i < precision - (int)length(); i ++)
+    for (int i = 0; i < precision - (int)(point - beg); i ++)
         result.append('0');
-    result += *this;
+    result += this -> substr(beg, point - beg);
+
     FormatWithFlag(result, flag, width);
     return result;
 }
@@ -104,11 +137,16 @@ MyString NumberString :: PrintFloat(const char *fmt, int begin, int end){
     int flag = GetFlag(fmt, begin, end);
     int width = GetDigit(fmt, begin, end);
     int precision = GetPrecision(fmt, begin, end, 6);
+
     MyString result(*this);
-    char *point = find('.'), *ender = this -> end();
-    result.erase(result.find('.') + precision + 1);
-    for (int i = 0; i < precision - (int)(ender - point); i ++)
+    char *point = find('.'), *ed = this -> end();
+    if (point != ed)
+        Round(result, (result.find('.') - result.begin()) + precision + 1);
+    else
+        result.append('.');
+    for (int i = 0; i < precision - (int)(ed - point); i ++)
         result.append('0');
+
     FormatWithFlag(result, flag, width);
     return result;
 }

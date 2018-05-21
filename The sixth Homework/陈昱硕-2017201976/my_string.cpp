@@ -9,6 +9,7 @@ using namespace std;
 
 const size_t MyString :: kCinLimit_ = 1025;
 size_t MyString :: number_of_strings_ = 0;
+const size_t MyString :: npos = -1;
 
 MyString :: MyString() : length_(0), size_(16), str_(new char [size_]){
     number_of_strings_ ++;
@@ -57,7 +58,7 @@ const MyString operator + (const MyString &s1, const MyString &s2){
     return ans;
 }
 
-void MyString :: append(char ch){
+void MyString :: append(const char ch){
     if (++ length_ == size_){
         size_ <<= 1;
         char *ptr = new char [size_];
@@ -69,7 +70,7 @@ void MyString :: append(char ch){
     str_[length_] = '\0';
 }
 
-char * MyString :: find(char ch){
+char * MyString :: find(const char ch){
     char *ptr = str_;
     for (;*ptr != ch && ptr != end(); ptr ++)
         ;
@@ -85,6 +86,13 @@ void MyString :: erase(char *beg, char *ed){
         *p1++ = *p2++;
     *p1 = '\0';
     length_ -= (ed - beg);
+}
+
+const MyString MyString :: substr(const char *beg, size_t len){
+    MyString result;
+    for (auto ptr = beg; ptr != end() && len --; ptr ++)
+        result.append(*ptr);
+    return result;
 }
 
 istream & operator >> (istream &is, MyString &str){
