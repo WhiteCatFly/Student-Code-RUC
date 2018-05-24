@@ -10,7 +10,8 @@ using namespace std;
 static const int NEGA = 0x1;
 static const int PLUS = 0x2;
 static const int SPACE = 0x4;
-static const int ZERO = 0x8;
+static const int POUND = 0x8;
+static const int ZERO = 0x10;
 
 static int GetFlag(const char *fmt, int &begin, int end){
     int result = 0;
@@ -25,6 +26,9 @@ static int GetFlag(const char *fmt, int &begin, int end){
                 break;
             case ' ':
                 result |= SPACE;
+                break;
+            case '#':
+                result |= POUND;
                 break;
             case '0':
                 result |= ZERO;
@@ -118,6 +122,13 @@ static void Round(MyString &res, int pos){
         res = "1" + res;
 }
 
+static void FloatFormat(MyString &result, int flag){
+    if (flag & POUND){
+        if (result.find('.') == result.end())
+            result.append('.');
+    }
+}
+
 MyString NumberString :: PrintDigit(const char *fmt, int begin, int end){
     int flag = GetFlag(fmt, begin, end);
     int width = GetDigit(fmt, begin, end);
@@ -128,6 +139,9 @@ MyString NumberString :: PrintDigit(const char *fmt, int begin, int end){
     for (int i = 0; i < precision - (int)(point - beg); i ++)
         result.append('0');
     result += this -> substr(beg, point - beg);
+
+    if (precision == 0 && result == "0")
+        result = "";
 
     FormatWithFlag(result, flag, width);
     return result;
@@ -147,6 +161,7 @@ MyString NumberString :: PrintFloat(const char *fmt, int begin, int end){
     for (int i = 0; i < precision - (int)(ed - point); i ++)
         result.append('0');
 
+    FloatFormat(result, flag);
     FormatWithFlag(result, flag, width);
     return result;
 }
