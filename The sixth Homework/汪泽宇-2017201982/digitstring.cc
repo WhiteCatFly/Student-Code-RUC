@@ -14,13 +14,13 @@ int StrToInt(char * l, char * r) {
 }
 
 //	required cur_prec > prec
-void Round(char * s, int pos, int prec) {
-	if(s[pos + prec + 1] >= '5') {
-		for(int i = pos + prec; i >= 0; i--) {
+void Round(char * s, size_t & pos, int prec) {
+	if(s[pos + prec] >= '5') {
+		for(int i = pos + prec - 1; i >= 0; i--) {
 			if(s[i] == '.') continue;
 			if(s[i] < '9') {
 				s[i]++;
-				for(int j = i + 1; j <= pos + prec; j++) {
+				for(size_t j = i + 1; j < pos + prec; j++) {
 					if(s[j] == '.') continue;
 					s[j] = '0';
 				}
@@ -28,17 +28,18 @@ void Round(char * s, int pos, int prec) {
 			}
 			if(!i) {
 				s[0] = '1';
-				for(int j = 1; j <= pos + prec + 1; j++) {
+				for(size_t j = 1; j <= pos + prec; j++) {
 					if(s[j] == '.') {
 						s[j] = '0';
 						s[++j] = '.';
 					}
 					else s[j] = '0';
 				}
+				pos++;
 			}
 		}
 	}
-	s[pos + prec + 1] = 0;
+	s[pos + prec] = 0;
 }
 
 String DigitString::set_format(char * format) const {
@@ -120,7 +121,7 @@ String DigitString::set_format(char * format) const {
 			cur_len = pos + prec;
 		}
 		else if(cur_len - pos > (size_t)prec) {
-			Round(s, pos - 1, prec);
+			Round(s, pos, prec);
 			len -= cur_len - (pos + prec);
 			cur_len = pos + prec;
 		}
