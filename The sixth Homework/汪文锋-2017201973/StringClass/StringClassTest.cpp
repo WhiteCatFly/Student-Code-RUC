@@ -6,7 +6,7 @@
 using namespace std;
 int main()
 {
-	NumberString c("123");
-	cout << c << endl;
+	NumberString c(double(18.4255));
+	cout << c.redouble() << endl;
 	return 0;
 }

@@ -183,29 +183,25 @@ NumberString::NumberString(const int &t)
 	*dicimals = '\0';
 	int tt = t;
 	int tx[101],tlen=0;
+	char ss[101];
+	for (int i = 0; i <= 100; i++)
+		ss[i] = '\0';
 	if (tt < 0)
 	{
 		tt = abs(tt);
-		c = new char[1];
-		c[len++] = '-';
+		ss[len++] = '-';
 	}
 	if (tt == 0)
-	{
-		c = new char[1];
-		c[len++] = '0';
-	}
+		ss[len++] = '0';
 	while (tt > 0)
 	{
 		tx[++tlen] = tt % 10;
 		tt /= 10;
 	}
 	for (int i = tlen; i >= 1; i--)
-	{
-		c = new char[1];
-		c[len++] = char(tx[i]+48);
-	}
-	c = new char[1];
-	c[len + 1] = '\0';
+		ss[len++] = char(tx[i]+48);
+	c = new char[len+1];
+	strcpy(c, ss);
 	ints = new char[len + 1];
 	strcpy(ints, c);
 }
@@ -215,16 +211,18 @@ NumberString::NumberString(const double &t)
 	len = 0;
 	int tt = t;
 	int tx[101], tlen = 0;
+	char ss[101];
+	for (int i = 0; i <= 100; i++)
+		ss[i] = '\0';
 	if (tt < 0)
 	{
 		tt = abs(tt);
-		ints = new char[1];
-		ints[len++] = '-';
+		ss[len++] = '-';
 	}
 	if (tt == 0)
 	{
 		ints = new char[1];
-		ints[len++] = '0';
+		ss[len++] = '0';
 	}
 	while (tt > 0)
 	{
@@ -232,22 +230,22 @@ NumberString::NumberString(const double &t)
 		tt /= 10;
 	}
 	for (int i = tlen; i >= 1; i--)
-	{
-		ints = new char[1];
-		ints[len++] = char(tx[i] + 48);
-	}
-	ints = new char[1];
-	ints[len + 1] = '\0';
+		ss[len++] = char(tx[i] + 48);
+	ints = new char[len+1];
+	strcpy(ints, ss);
 	len=0;
-	double ttt = t - double(tt);
-	while (ttt * 10 > 0)
+	for (int i = 0; i <= 100; i++)
+		ss[i] = '\0';
+	double ttt = t - double(int(t));
+	while (ttt * 10 > 1e-9)
 	{
 		ttt *= 10;
-		dicimals = new char[1];
-		dicimals[len++] = char(48+int(ttt)%10);
+		ss[len++] = char(48+int(ttt)%10);
+		ttt = ttt - int(ttt);
+		
 	}
-	dicimals = new char[1];
-	dicimals[len + 1] = '\0';
+	dicimals = new char[len+1];
+	strcpy(dicimals, ss);
 	len = strlen(ints) + strlen(dicimals) + 1;
 	c = new char[len + 1];
 	c = strcat(c, ints);
@@ -271,17 +269,31 @@ NumberString::~NumberString()
 int NumberString::reint()
 {
 	int t=0;
-	for (int i = 0; i < len; i++)
-		t = t * 10 + int(ints[i]) - 48;
+	int lenx = strlen(ints);
+	for (int i = 0; i < lenx; i++)
+		if(ints[i]>='0'&&ints[i]<='9')
+			t = t * 10 + int(ints[i]) - 48;
+	if (ints[0] == '-')
+		return -t;
 	return t;
 }
 double NumberString::redouble()
 {
-	double t1 = 0.0;
-	for (int i = 0; i < len; i++)
-		t1 = t1 * 10 + int(ints[i]) - 48;
+	int ti = 0;
+	int lenx = strlen(ints);
+	int leny = strlen(dicimals);
+	for (int i = 0; i < lenx; i++)
+		if (ints[i] >= '0'&&ints[i] <= '9')
+			ti = ti * 10 + int(ints[i]) - 48;
+	double t1 = ti;
 	double t2 = 0.0;
-	for (int i = 0, xx = 10; i < len; i++, xx *= 10)
-		t2 = t2 + double(int(dicimals[i]) - 48.0) / double(xx);
-	return t1+t2;
+	double xx = 0.1;
+	for (int i = 0; i < leny; i++, xx *=0.1)
+		if (dicimals[i] >= '0'&&dicimals[i] <= '9')
+			t2 = t2 + double(int(dicimals[i]) - 48.0) *xx;
+	double t3 = 0.0;
+	t3	=	t1 + t2;
+	if (ints[0] == '-')
+		return -t3;
+	return t3;
 }
