@@ -137,10 +137,8 @@ const PostingList PostingList::operator - (const PostingList &post) const{
 }
 
 void PostingList::link(const PostingList &post){
-    if (empty()){
-        *this = post;
+    if (empty() || post.empty())
         return;
-    }
     PostingList result;
     auto p1 = posting_.begin();
     auto p2 = post.posting_.begin();

@@ -86,8 +86,14 @@ PostingList SearchEngine::BaseSearch(const std::vector<Words> &query, const Inde
             }
         }
         PostingList cur;
+        bool isfirst = true;
         for (auto & word : term){
-            cur.link(idx[word]);
+            if (isfirst){
+                cur = idx[word];
+                isfirst = false;
+            }
+            else
+                cur.link(idx[word]);
         }
         switch (flag){
             case none:
