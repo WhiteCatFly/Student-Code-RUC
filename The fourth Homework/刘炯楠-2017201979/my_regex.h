@@ -8,7 +8,7 @@
 
 static const std::string title_pattern("<title>(.|\n|\r)*?</title>");
 static const std::string h_pattern("((<h[1-6]>)|(<h[1-6] (.|\n|\r)*?>))(.|\n|\r)*?</h[1-6]>");
-static const std::string p_pattern("((<p>)|(<p (.|.\n|\r)*?)>)(.|\n|\r)*?</p>");
+static const std::string p_pattern("((<p>)|(<p (.|.\n|\r)*?>))(.|\n|\r)*?</p>");
 static const std::string url_pattern("<a(.|\n|\r)*?href=(\"|')(.|\n|\r)*?(\"|')(.|\n|\r)*?>(.|\n|\r)*?</a>");
 
 static const std::string p_st_pattern("((<p>)|(<p (.|.\n|\r)*?>))");
