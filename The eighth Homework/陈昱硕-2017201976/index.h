@@ -2,6 +2,7 @@
 #define INDEX_H
 
 #include <cstdio>
+#include <cmath>
 #include <cstddef>
 
 #include <string>
@@ -40,12 +41,20 @@ class DocPosition{
 private:
     size_t docID_;
     std::vector<Segment> position_;
+    double weight_;
 
 public:
     DocPosition(size_t docID = Document::npos) : docID_(docID){}
 
     size_t docID() const{return docID_;}
     bool empty() const{return position_.empty();}
+    double weight() const{return weight_;}
+    void SetWegith(double idf){
+        if (position_.size() == 0)
+            weight_ = 0;
+        else
+            weight_ = (1 + log(position_.size())) * idf;
+    }
 
     void append(const Segment &seg){
         if (seg != Segment())
@@ -68,15 +77,22 @@ public:
 class PostingList{
 private:
     std::vector<DocPosition> posting_;
+    double idf_;
 
 public:
-    PostingList() = default;
+    PostingList() : idf_(0){}
 
     const std::vector<DocPosition> & posting() const{return posting_;}
     bool empty() const{return posting_.empty();}
+    double idf(){return idf_;}
 
     void append(const DocPosition &pos){if (!pos.empty()) posting_.push_back(pos);}
     void append(size_t docID = Document::npos, size_t pos = Segment::npos);
+    void SetWeight(const size_t doc_number){
+        idf_ = log(1.0 * doc_number / posting_.size());
+        for (auto & doc : posting_)
+            doc.SetWegith(idf_);
+    }
 
     const PostingList operator & (const PostingList &post) const;
     const PostingList operator | (const PostingList &post) const;
@@ -100,7 +116,7 @@ public:
         return *this;
     }
 
-    void link(const PostingList &post);
+    void Combine(const PostingList &post);
 
     ~PostingList() = default;
 
@@ -124,12 +140,16 @@ private:
     std::unordered_map<std::string, size_t> term_map_;
 
     std::vector<PostingList> dictionary_;
+    std::vector<double> length_;
 
 public:
     Index() : term_number_(0){};
 
     void append(const size_t docID, const std::vector<std::string> &content);
     const PostingList operator [] (const std::string &term) const;
+
+    void SetLength(const size_t doc_number);
+    double length(const size_t idx) const{return length_[idx];}
 
     ~Index() = default;
 

@@ -1,11 +1,14 @@
 #include "index.h"
 
+#include <cmath>
 #include <cassert>
 
 #include <vector>
 #include <string>
 
 using namespace std;
+
+inline static double sqr(const double &x){return x * x;}
 
 const DocPosition DocPosition::operator + (const DocPosition &pos) const{
     if (docID_ != pos.docID_)
@@ -136,8 +139,8 @@ const PostingList PostingList::operator - (const PostingList &post) const{
     return result;
 }
 
-void PostingList::link(const PostingList &post){
-    if (empty() || post.empty())
+void PostingList::Combine(const PostingList &post){
+    if (empty())
         return;
     PostingList result;
     auto p1 = posting_.begin();
@@ -181,4 +184,15 @@ const PostingList Index::operator [] (const string &term) const{
     if (iter == term_map_.end())
         return PostingList();
     return dictionary_[iter -> second];
+}
+
+void Index::SetLength(const size_t doc_number){
+    length_.resize(doc_number, 0);
+    for (auto & post : dictionary_){
+        post.SetWeight(doc_number);
+        for (auto & doc : post.posting())
+            length_[doc.docID()] += sqr(doc.weight());
+    }
+    for (size_t i = 0; i < doc_number; i ++)
+        length_[i] = sqrt(length_[i]);
 }

@@ -3,6 +3,10 @@
 
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <algorithm>
+
+#include "filter.h"
 
 typedef std::vector<std::string> Words;
 
@@ -12,7 +16,7 @@ private:
     std::vector<Words> query_;
 
 public:
-    Query(void *segmentor);
+    Query(void *segmentor, Filter filter);
 
     bool accurate() const{return accurate_;}
     const std::vector<Words> & query() const{return query_;}

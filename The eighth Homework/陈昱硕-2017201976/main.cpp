@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
     SearchEngine search_engine("file_list.txt");
-    for (int i = 0; i < 10; i ++)
+    while (true)
         search_engine.Run();
     return 0;
 }

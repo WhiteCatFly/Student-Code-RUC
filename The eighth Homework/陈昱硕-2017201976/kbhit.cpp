@@ -56,6 +56,18 @@ inline static int readch(){
     return ch;
 }
 
+inline static void ClearInput(){
+    char ch;
+    int nread = -1;
+    for (;nread != 0;){
+        new_settings.c_cc[VMIN] = 0;
+        tcsetattr(0, TCSANOW, &new_settings);
+        nread = read(0, &ch, 1);
+        new_settings.c_cc[VMIN] = 1;
+        tcsetattr(0, TCSANOW, &new_settings);
+    }
+}
+
 void CheckKeyboard(){
     SetColor(stderr, red);
     fprintf(stderr, "按q键退出，按r键继续搜索\n");
@@ -69,6 +81,7 @@ void CheckKeyboard(){
 
     if (ch == 'q'){
         CloseKeyboard();
+        ClearInput();
         exit(0);
     }
     else if (ch == 'r'){

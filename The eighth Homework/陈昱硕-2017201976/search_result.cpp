@@ -80,10 +80,16 @@ void SearchResult::Write(ostream &os, const string &type,
     os << type;
     SetColor(os, closed);
     for (size_t j = 0; j < str_vec.size(); j ++){
-        if (flag_vec[j])
+        if (flag_vec[j]){
             SetColor(os, red);
-        else
+            SetColor(os, Color::highlight);
+        }
+        else{
             SetColor(os, white);
+            SetColor(os, closed);
+        }
+        if (j != 0 && isalpha(str_vec[j][0]))
+            os << ' ';
         os << str_vec[j];
     }
     SetColor(os, white);
