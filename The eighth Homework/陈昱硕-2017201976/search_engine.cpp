@@ -196,8 +196,10 @@ PostingList SearchEngine::RankedSearch(const std::vector<Words> & query){
     auto func = [&scores](const int &a, const int &b){return scores[a] > scores[b];};
     sort(rank.begin(), rank.end(), func);
 
-    // for (size_t i = 0; i < doc_number; i ++)
-        // cerr << "i = " << i << " scores = " << scores[rank[i]] << endl;
+    //for (size_t i = 0; i < doc_number; i ++)
+        //if (scores[rank[i]] != 0)
+            //cerr << "i = " << i << " id = " << rank[i] <<
+            //" scores = " << scores[rank[i]] << endl;
 
     PostingList post;
     for (size_t i = 0; i < doc_number; i ++){
