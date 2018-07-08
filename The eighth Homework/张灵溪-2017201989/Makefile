@@ -12,3 +12,5 @@ Hits.o: Hits.cpp Hits.h
 	g++ -std=c++11 -O3 -c Hits.cpp
 index_search.o: index_search.cpp index_search.h Hits.o dictionary.o document.o posting_list.o
 	g++ -std=c++11 -O3 -c index_search.cpp
+clean:
+	rm *.o

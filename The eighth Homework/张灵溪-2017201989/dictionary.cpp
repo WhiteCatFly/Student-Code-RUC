@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <set>
 #include "posting_list.h"
 #include "document.h"
 #include "dictionary.h"
@@ -18,6 +19,10 @@ dictionary::dictionary(){
 		store.push_back(init);
 		add_doc(init);
 	}
+	ifstream file1("stopwords.txt");
+	string stop;
+	while(file>>stop)
+		stopwords.insert(stop);
 }
 
 void dictionary::add_doc(document doc){

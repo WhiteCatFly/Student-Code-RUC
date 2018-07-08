@@ -32,5 +32,5 @@ void Hits::insert(pair<int, double> doc){
 
 void Hits::print(){
 	for(size_t i = 0; i < rank && i < res.size(); i++)
-		cout<<store[res[i].first].Url()<<endl;
+		cout<<store[res[i].first].Title()<<store[res[i].first].Url()<<endl;
 }

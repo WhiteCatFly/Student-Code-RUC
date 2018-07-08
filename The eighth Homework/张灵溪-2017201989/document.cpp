@@ -1,5 +1,6 @@
 #include <string>
 #include <cmath>
+#include <set>
 #include <fstream>
 #include <sstream>
 #include "document.h"
@@ -8,6 +9,7 @@
 using namespace std;
 
 vector<document> store;
+set<string> stopwords;
 
 double document::wtf(string word){
 	if(word_freq.count(word))
@@ -28,6 +30,8 @@ void document::analyer(){
 	test.cut(content, ans);	
 	for(int i=0;i<ans.size();i++){
 		string temp = ans[i].first;
+		if(stopwords.count(temp))
+			continue;
 		if(word_freq.count(temp))
 			word_freq[temp]++;
 		else{
@@ -41,6 +45,8 @@ void document::writer(){
 	istringstream is(content);
 	string temp;
 	while(is>>temp){
+		if(stopwords.count(temp))
+			continue;
 		if(word_freq.count(temp))
 			word_freq[temp]++;
 		else{
@@ -68,6 +74,11 @@ document::document(int id, const char* dir, string Url, bool seg){
 	string line;
 	while(getline(file,line))
 	content += line;
+	string path2(dir);
+	path2 += ".title";
+	ifstream file2(path2.c_str());
+	while(file2>>line)
+		title += line;
 	if(seg)
 		writer();
 	else
