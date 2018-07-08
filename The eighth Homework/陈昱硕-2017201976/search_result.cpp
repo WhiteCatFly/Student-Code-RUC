@@ -35,14 +35,14 @@ void SearchResult::Read(const string &file_name, const Query &query,
                     continue;
             }
 
-            auto ptr = search(words.begin(), words.end(),
-                        keywords.begin(), keywords.end());
-            auto length = keywords.end() - keywords.begin();
-            while (ptr != words.end()){
-                marked = true;
-                fill_n(flag.begin() + (ptr - words.begin()), length, highlight);
-                ptr = search(ptr + length, words.end(),
-                        keywords.begin(), keywords.end());
+            for (auto p = keywords.begin(); p < keywords.end(); p ++){
+                auto ptr = search(words.begin(), words.end(), p, p + 1);
+                auto length = 1;
+                while (ptr != words.end()){
+                    marked = true;
+                    fill_n(flag.begin() + (ptr - words.begin()), length, highlight);
+                    ptr = search(ptr + length, words.end(), p, p + 1);
+                }
             }
         }
         if (marked){
