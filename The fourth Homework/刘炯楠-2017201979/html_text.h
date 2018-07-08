@@ -28,8 +28,8 @@ private:
 	void normalize_content();
 public:
 	html_text();
-	html_text(std::istringstream & iStr, std::string & name);
-	html_text(std::ifstream & iFile, std::string & name);
+	html_text(std::istringstream & iStr,const std::string & name);
+	html_text(std::ifstream & iFile,const std::string & name);
 	~html_text();
 	
 	html_text & operator = (const html_text & rval);
