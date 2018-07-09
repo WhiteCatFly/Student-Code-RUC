@@ -29,7 +29,7 @@ void Info_Ret::search(string str){
 	for (int i = 0; i <= 9; ++i){
 		int id = score_sort[i].second;
 		cout << "\033[1m" << web_title[id] << "\033[0m" << endl;
-		for (int j = 694; j < 900 + 25 * 3; ++j)
+		for (int j = 0; j < max_out_len; ++j)
 			cout << web_body[id][j];
 		cout << "..." << endl << endl;
 	}

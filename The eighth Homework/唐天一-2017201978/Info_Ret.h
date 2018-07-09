@@ -18,6 +18,7 @@ private:
 	vector<string> web_body;
 	vector< map<string, double> > wtd;
 	map<string, bool> stop_words;
+	const static int max_out_len = 300;
 public:
 	Info_Ret();
 	void make_wtd();
