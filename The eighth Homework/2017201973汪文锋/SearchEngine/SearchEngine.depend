@@ -1,0 +1,64 @@
+# depslib dependency file v1.0
+1530975303 source:/home/dia/Linux_BIGW/SearchEngine/PostingList.cpp
+	<vector>
+	"PostingList.h"
+
+1530975271 /home/dia/Linux_BIGW/SearchEngine/PostingList.h
+	<vector>
+
+1531034446 source:/home/dia/Linux_BIGW/SearchEngine/SearchEngine.cpp
+	"PostingList.h"
+	"WordDictionary.h"
+	"SearchEngine.h"
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	<fstream>
+	<stdio.h>
+	<cstring>
+	<dirent.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<stdlib.h>
+	<math.h>
+	<algorithm>
+	<queue>
+
+1531036285 /home/dia/Linux_BIGW/SearchEngine/WordDictionary.h
+	<string>
+	<vector>
+	<math.h>
+	"PostingList.h"
+
+1531033678 /home/dia/Linux_BIGW/SearchEngine/SearchEngine.h
+	"PostingList.h"
+	"WordDictionary.h"
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	<fstream>
+
+1531026427 source:/home/dia/Linux_BIGW/SearchEngine/WordDictionary.cpp
+	<vector>
+	<string>
+	<math.h>
+	<iostream>
+	"PostingList.h"
+	"WordDictionary.h"
+
+1531033696 source:/home/dia/Linux_BIGW/SearchEngine/Test.cpp
+	"PostingList.h"
+	"WordDictionary.h"
+	"SearchEngine.h"
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	<fstream>
+	<stdio.h>
+	<cstring>
+	<dirent.h>
+
